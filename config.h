@@ -18,6 +18,7 @@
 #else
 //És ide pedig azok, amik fejlesztés közben kellenek (pl: splash screen megkerülése)
 #define WINDOW_TITLE "Minecraft clone Debug"
+#define EXIT_WITH_ESC
 
 #endif
 
