@@ -5,6 +5,7 @@ set(CMAKE_CXX_STANDARD 14)
 
 add_subdirectory( thirdparty/glfw )
 add_subdirectory( thirdparty/glew )
+add_subdirectory( thirdparty/glm )
 
 if( MSVC )
     SET( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /ENTRY:mainCRTStartup" )
@@ -15,7 +16,8 @@ add_executable(mc_clone main.cpp config.h)
 target_include_directories(mc_clone PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/glfw/include)
 target_include_directories(mc_clone PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/glew/include)
 target_include_directories(mc_clone PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/spdlog/include)
-target_link_libraries(mc_clone glfw libglew_static spdlog)
+target_include_directories(mc_clone PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/glm)
+target_link_libraries(mc_clone glfw libglew_static spdlog glm::glm)
 
 if( MSVC )
     if(${CMAKE_VERSION} VERSION_LESS "3.6.0")

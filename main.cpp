@@ -2,6 +2,8 @@
 //For some unknown reason, the code won't compile, unless glew.h is included before glfw3.h
 #include "GL/glew.h"
 #include <GLFW/glfw3.h>
+#include <glm/mat4x4.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -95,7 +97,7 @@ int main() {
     }
 
     glfwMakeContextCurrent(window);
-    glfwSwapInterval(-1);
+    glfwSwapInterval(0);
     glfwSetKeyCallback(window, HandleKeyInput);
 
     glewExperimental = GL_TRUE;
@@ -123,7 +125,34 @@ int main() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
+    GLuint uniformLoc = glGetUniformLocation(shader, "projectionMat");
+
+    glm::mat4 view = glm::lookAt(
+            glm::vec3(0, 0, 10),
+            glm::vec3(0, 0, 0),
+            glm::vec3(0, 1, 0)
+            );
+/*
+    glm::mat4 projection = glm::perspective(
+            70,
+            1280/720,
+            .01f,
+            100.0f
+            );
+*/
+    double lastTime = glfwGetTime();
+    int fps = 0;
+
     while (!glfwWindowShouldClose(window)) {
+
+        double currentTime = glfwGetTime();
+        fps++;
+        if (currentTime-lastTime >= 1.0) {
+            spdlog::info("FPS: {}", fps);
+            fps = 0;
+            lastTime = currentTime;
+        }
+
         glfwPollEvents();
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
