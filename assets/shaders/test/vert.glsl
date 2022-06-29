@@ -2,8 +2,11 @@
 
 layout (location = 0) in vec3 aPos;
 
+out vec3 pos;
+
 uniform mat4 projectionMat;
 
 void main() {
-    gl_Position = vec4(aPos, 1.0) * projectionMat;
+    gl_Position = projectionMat * vec4(aPos, 1.0);
+    pos = aPos;
 }

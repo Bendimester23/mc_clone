@@ -12,12 +12,24 @@ if( MSVC )
 endif()
 
 
-add_executable(mc_clone main.cpp config.h)
+add_executable(mc_clone
+        main.cpp
+        config.h
+        Game.cpp
+        Game.h
+        shader/ShaderProgram.cpp
+        shader/ShaderProgram.h
+        utils/files.h
+        utils/files.cpp
+        render/Camera.cpp render/Camera.h)
+
 target_include_directories(mc_clone PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/glfw/include)
 target_include_directories(mc_clone PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/glew/include)
 target_include_directories(mc_clone PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/spdlog/include)
 target_include_directories(mc_clone PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/glm)
 target_link_libraries(mc_clone glfw libglew_static spdlog glm::glm)
+
+file(COPY ./assets DESTINATION ./)
 
 if( MSVC )
     if(${CMAKE_VERSION} VERSION_LESS "3.6.0")
