@@ -5,13 +5,14 @@
 #include "Game.h"
 
 float ve[] = {
-        0.0f, 0.0f,
-        0.0f, 1.0f,
-        1.0f, 1.0f,
+        //pos                  //UV
+        0.0f, 0.0f,    0.0f, 1.0f,
+        0.0f, 1.0f,    0.0f, 0.0f,
+        1.0f, 1.0f,    1.0f, 0.0f,
 
-        0.0f, 0.0f,
-        1.0f, 1.0f,
-        1.0f, 0.0f,
+        0.0f, 0.0f,  0.0f, 1.0f,
+        1.0f, 1.0f,  1.0f, 0.0f,
+        1.0f, 0.0f,  1.0f, 1.0f
 };
 
 MeshBuilder mb;
@@ -128,8 +129,12 @@ Game::Game() : testShader("test"), wireframeShader("wireframe"), textureShader("
     glBindBuffer(GL_ARRAY_BUFFER, texVBO);
     glBufferData(GL_ARRAY_BUFFER, (long)sizeof(ve), ve, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void *) nullptr);
+    //Pos
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void *) nullptr);
     glEnableVertexAttribArray(0);
+    //Uv
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void *) (2*sizeof(float)));
+    glEnableVertexAttribArray(1);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);

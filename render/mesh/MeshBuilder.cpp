@@ -6,7 +6,8 @@
 #include "spdlog/spdlog.h"
 
 MeshBuilder::MeshBuilder(): m_Indices(), m_Vertices() {
-
+    this->m_Indices.reserve(16000);
+    this->m_Vertices.reserve(16000);
 }
 
 //Fails when more than one cube is present
@@ -14,14 +15,14 @@ void MeshBuilder::AddVertex(VertexCoord vert) {
     unsigned short idx = 0;
     for (const auto &item : this->m_Vertices) {
         if (item.x == vert.x && item.y == vert.y && item.z == vert.z) {
-            this->m_Indices.insert(this->m_Indices.end(), idx);
+            this->m_Indices.push_back( idx);
             return;
         }
         idx++;
     }
-    this->m_Vertices.insert(this->m_Vertices.end(), vert);
+    this->m_Vertices.push_back(vert);
     spdlog::info("Other, slightly different thingy: {}", vert.to_string());
-    this->m_Indices.insert(this->m_Indices.end(), this->m_Vertices.size()-1);
+    this->m_Indices.push_back(this->m_Vertices.size()-1);
 }
 
 void MeshBuilder::AddQuad(VertexCoord a, VertexCoord b, VertexCoord c, VertexCoord d, bool cc) {

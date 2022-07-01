@@ -6,5 +6,6 @@
     <mapping directory="$PROJECT_DIR$/thirdparty/glfw" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/thirdparty/glm" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/thirdparty/spdlog" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/thirdparty/stb" vcs="Git" />
   </component>
 </project>
