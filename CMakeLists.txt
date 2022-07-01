@@ -21,12 +21,13 @@ add_executable(mc_clone
         shader/ShaderProgram.h
         utils/files.h
         utils/files.cpp
-        render/Camera.cpp render/Camera.h)
+        render/Camera.cpp render/Camera.h render/mesh/MeshBuilder.cpp render/mesh/MeshBuilder.h)
 
 target_include_directories(mc_clone PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/glfw/include)
 target_include_directories(mc_clone PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/glew/include)
 target_include_directories(mc_clone PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/spdlog/include)
 target_include_directories(mc_clone PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/glm)
+target_include_directories(mc_clone PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/stb)
 target_link_libraries(mc_clone glfw libglew_static spdlog glm::glm)
 
 file(COPY ./assets DESTINATION ./)

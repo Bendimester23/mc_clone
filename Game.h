@@ -13,13 +13,19 @@
 #include "config.h"
 #include "shader/ShaderProgram.h"
 #include "render/Camera.h"
+#include "render/mesh/MeshBuilder.h"
+#include <stb_image.h>
 
 class Game {
     GLFWwindow* window;
     ShaderProgram testShader;
+    ShaderProgram wireframeShader;
+    ShaderProgram textureShader;
     Camera camera;
 
-    GLuint VBO{}, VAO{}, IVBO{};
+    bool wireframe;
+
+    GLuint VBO{}, VAO{}, IVBO{}, texVBO{}, texVAO{}, textureId{};
 
 
 public:
@@ -34,6 +40,8 @@ public:
     void Render(double delta);
 
     static Game* GetInstance();
+
+    void HandleKey(int key, int status, int action, int mods);
 
 private:
     static void HandleKeyInput(GLFWwindow* window, int key, int status, int action, int mods);

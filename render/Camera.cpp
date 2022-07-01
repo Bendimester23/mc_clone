@@ -6,7 +6,7 @@
 
 Camera::Camera(float fovy, float aspect, float near, float far, float mouse_sensitivity, float movement_speed, GLFWwindow* window) {
 
-    this->m_Position = glm::vec3();
+    this->m_Position = glm::vec3(0.0f, 0.0f, 3.0f);
     this->m_Forward = glm::vec3(0.0f, 0.0f, 1.0f);
     this->m_Right = glm::vec3(1.0f, 0.0f, 0.0f);
     this->m_Up = glm::cross(this->m_Forward, this->m_Right);
@@ -49,22 +49,6 @@ void Camera::Update(float delta) {
 
     glfwSetCursorPos(this->m_Window, 640, 360);
 
-    if (glfwGetKey(this->m_Window, GLFW_KEY_UP ) == GLFW_PRESS){
-        this->m_Position += this->m_Forward * delta * this->m_Movement_speed;
-    }
-
-    if (glfwGetKey(this->m_Window, GLFW_KEY_DOWN ) == GLFW_PRESS){
-        this->m_Position -= this->m_Forward * delta * this->m_Movement_speed;
-    }
-
-    if (glfwGetKey(this->m_Window, GLFW_KEY_RIGHT ) == GLFW_PRESS){
-        this->m_Position += this->m_Right * delta * this->m_Movement_speed;
-    }
-
-    if (glfwGetKey(this->m_Window, GLFW_KEY_LEFT ) == GLFW_PRESS){
-        this->m_Position -= this->m_Right * delta * this->m_Movement_speed;
-    }
-
     float angleH = glm::radians(this->m_VerticalAngle);
     float angleV = glm::radians(this->m_HorizontalAngle);
 
@@ -81,6 +65,22 @@ void Camera::Update(float delta) {
     );
 
     this->m_Up = glm::cross( this->m_Right, this->m_Forward );
+
+    if (glfwGetKey(this->m_Window, GLFW_KEY_W ) == GLFW_PRESS){
+        this->m_Position += this->m_Forward * delta * this->m_Movement_speed;
+    }
+
+    if (glfwGetKey(this->m_Window, GLFW_KEY_S ) == GLFW_PRESS){
+        this->m_Position -= this->m_Forward * delta * this->m_Movement_speed;
+    }
+
+    if (glfwGetKey(this->m_Window, GLFW_KEY_D ) == GLFW_PRESS){
+        this->m_Position += this->m_Right * delta * this->m_Movement_speed;
+    }
+
+    if (glfwGetKey(this->m_Window, GLFW_KEY_A ) == GLFW_PRESS){
+        this->m_Position -= this->m_Right * delta * this->m_Movement_speed;
+    }
 
     this->m_ViewMatrix = glm::lookAt(
             this->m_Position,
