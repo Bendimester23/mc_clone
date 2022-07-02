@@ -1,7 +1,7 @@
 //
 // Created by bendi on 2022. 06. 27..
 //
-
+#pragma once
 #ifndef MC_CLONE_GAME_H
 #define MC_CLONE_GAME_H
 
@@ -14,6 +14,7 @@
 #include "shader/ShaderProgram.h"
 #include "render/Camera.h"
 #include "render/mesh/MeshBuilder.h"
+#include "render/mesh/Mesh.h"
 #include <stb_image.h>
 
 class Game {
@@ -22,8 +23,10 @@ class Game {
     ShaderProgram wireframeShader;
     ShaderProgram textureShader;
     Camera camera;
+    Mesh testMesh;
 
     bool wireframe;
+    bool cull_face;
 
     GLuint VBO{}, VAO{}, IVBO{}, texVBO{}, texVAO{}, textureId{};
 

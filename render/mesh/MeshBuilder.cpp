@@ -21,7 +21,6 @@ void MeshBuilder::AddVertex(VertexCoord vert) {
         idx++;
     }
     this->m_Vertices.push_back(vert);
-    spdlog::info("Other, slightly different thingy: {}", vert.to_string());
     this->m_Indices.push_back(this->m_Vertices.size()-1);
 }
 
@@ -52,7 +51,6 @@ std::vector<float> MeshBuilder::GetVertices() {
         res.push_back(item.x);
         res.push_back(item.y);
         res.push_back(item.z);
-        spdlog::info("Thingy: {}", item.to_string());
     }
 
     return res;

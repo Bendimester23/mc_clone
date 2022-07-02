@@ -21,7 +21,7 @@ add_executable(mc_clone
         shader/ShaderProgram.h
         utils/files.h
         utils/files.cpp
-        render/Camera.cpp render/Camera.h render/mesh/MeshBuilder.cpp render/mesh/MeshBuilder.h)
+        render/Camera.cpp render/Camera.h render/mesh/MeshBuilder.cpp render/mesh/MeshBuilder.h render/mesh/Mesh.cpp render/mesh/Mesh.h)
 
 target_include_directories(mc_clone PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/glfw/include)
 target_include_directories(mc_clone PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/glew/include)
