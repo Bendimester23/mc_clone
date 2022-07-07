@@ -1,5 +1,9 @@
 #version 330 core
 
+//int
+//x    y    z    u    v    light
+//0000 0000 0000 0000 0000 0000  0000 0000
+
 layout (location = 0) in vec3 aPos;
 
 out vec3 pos;

@@ -15,21 +15,22 @@
 #include "render/Camera.h"
 #include "render/mesh/MeshBuilder.h"
 #include "render/mesh/Mesh.h"
+#include "world/Chunk.h"
+#include "render/mesh/ChunkMesh.h"
+#include "render/texture/Texture.h"
 #include <stb_image.h>
 
 class Game {
     GLFWwindow* window;
     ShaderProgram testShader;
     ShaderProgram wireframeShader;
-    ShaderProgram textureShader;
+    ShaderProgram chunkShader;
     Camera camera;
-    Mesh testMesh;
+    Texture atlasTexture;
+    ChunkMesh testChunkMesh = ChunkMesh(new Chunk(ChunkCoordinate(0, 0, 0)));
 
     bool wireframe;
     bool cull_face;
-
-    GLuint VBO{}, VAO{}, IVBO{}, texVBO{}, texVAO{}, textureId{};
-
 
 public:
     Game();
@@ -44,7 +45,7 @@ public:
 
     static Game* GetInstance();
 
-    void HandleKey(int key, int status, int action, int mods);
+    void HandleKey(int key, __attribute__((unused)) int status, int action, __attribute__((unused)) int mods);
 
 private:
     static void HandleKeyInput(GLFWwindow* window, int key, int status, int action, int mods);

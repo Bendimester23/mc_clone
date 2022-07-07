@@ -26,16 +26,22 @@ class Camera {
     float m_Mouse_sensitivity;
     float m_Movement_speed;
 
+    bool m_CursorGrabbed;
+
     GLFWwindow* m_Window;
 
 public:
-    Camera() = default;
+    Camera();
 
     Camera(float fovy, float aspect, float near, float far, float mouse_sensitivity, float movement_speed, GLFWwindow* window);
 
     void Update(float delta);
 
     glm::mat4 GetMatrix();
+
+    void SetPosition(glm::vec3 pos);
+
+    void ToggleCursorState();
 };
 
 

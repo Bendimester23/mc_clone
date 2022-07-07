@@ -28,7 +28,7 @@ void ShaderProgram::UnBind() {
     this->m_Bound = false;
 }
 
-ShaderProgram::ShaderProgram(std::string name) {
+ShaderProgram::ShaderProgram(std::string name): id(0) {
     this->m_Name = std::move(name);
     this->m_Bound = false;
     this->m_HasError = false;
@@ -74,15 +74,23 @@ GLuint ShaderProgram::CreateShader(const std::string &path, GLuint type) {
     return shader;
 }
 
-GLuint ShaderProgram::GetUniformLocation(const std::string& name) {
+GLint ShaderProgram::GetUniformLocation(const std::string& name) {
     if (this->m_UniformCache.find(name) == this->m_UniformCache.end()) this->m_UniformCache[name] = glGetUniformLocation(this->id, name.c_str());
     return this->m_UniformCache[name];
 }
 
-void ShaderProgram::SetUniformMat4(std::string name, glm::mat4 value) {
+void ShaderProgram::SetUniformMat4(const std::string& name, glm::mat4 value) {
     if (!this->m_Bound) {
         spdlog::warn(R"(Tried to set uniform "{}" on unbound shader "{}"!)", name, this->m_Name);
         return;
     }
     glUniformMatrix4fv(this->GetUniformLocation(name), 1, GL_FALSE, &value[0][0]);
+}
+
+void ShaderProgram::SetUniformVec3(const std::string& name, glm::vec3 value) {
+    if (!this->m_Bound) {
+        spdlog::warn(R"(Tried to set uniform "{}" on unbound shader "{}"!)", name, this->m_Name);
+        return;
+    }
+    glUniform3f(this->GetUniformLocation(name), value.x, value.y, value.z);
 }

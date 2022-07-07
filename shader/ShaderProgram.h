@@ -20,7 +20,7 @@ class ShaderProgram {
     std::string m_Name;
     bool m_Bound;
     bool m_HasError;
-    std::map<std::string, GLuint> m_UniformCache;
+    std::map<std::string, GLint> m_UniformCache;
 
 public:
     explicit ShaderProgram(std::string name);
@@ -31,10 +31,12 @@ public:
 
     void Reload();
 
-    void SetUniformMat4(std::string name, glm::mat4 value);
+    void SetUniformMat4(const std::string& name, glm::mat4 value);
+
+    void SetUniformVec3(const std::string& name, glm::vec3 value);
 
 private:
-    GLuint GetUniformLocation(const std::string& name);
+    GLint GetUniformLocation(const std::string& name);
 
     GLuint CreateShader(const std::string& path, GLuint type);
 };

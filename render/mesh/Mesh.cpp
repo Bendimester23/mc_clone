@@ -35,18 +35,20 @@ void Mesh::Upload(void *vertices, void *indices, int vertexCount, int indexCount
 
     glGenBuffers(1, &this->m_IndexBuffer);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->m_IndexBuffer);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, (int)indexCount*sizeof(unsigned short), indices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, (long)indexCount*sizeof(unsigned short), indices, GL_STATIC_DRAW);
 
-    long offset = 0;
+    /*long offset = 0;
 
     for (int i = 0; i < 16; i++) {
         if (this->m_VertexFormat.attributes[i].size == 0) break;
         auto attr = this->m_VertexFormat.attributes[i];
 
         glVertexAttribPointer(attr.location, attr.count, attr.gl_type, GL_FALSE, size, (void *) &offset);
-        glEnableVertexAttribArray(0);
+        glEnableVertexAttribArray(i);
         offset += attr.size;
-    }
+    }*/
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, size, 0);
+    glEnableVertexAttribArray(0);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);

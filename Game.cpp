@@ -17,7 +17,7 @@ float ve[] = {
 
 MeshBuilder mb;
 
-Game::Game() : testShader("test"), wireframeShader("wireframe"), textureShader("texture"), cull_face(true) {
+Game::Game() : testShader("test"), wireframeShader("wireframe"), cull_face(true), chunkShader("chunk") {
     if (glfwInit() != GLFW_TRUE) {
         spdlog::error("GLFW init failed!");
         std::exit(1);
@@ -28,6 +28,9 @@ Game::Game() : testShader("test"), wireframeShader("wireframe"), textureShader("
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
     glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+    glfwSetErrorCallback([](int, const char * err) {
+        spdlog::info("GLFW Error: {}", err);
+    });
 
     this->window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE, nullptr, nullptr);
     if (window == nullptr) {
@@ -35,14 +38,13 @@ Game::Game() : testShader("test"), wireframeShader("wireframe"), textureShader("
         glfwTerminate();
         std::exit(1);
     }
-    this->camera = Camera(60, ((float) WINDOW_WIDTH) / (float) WINDOW_HEIGHT, 0.001f, 1000.0f, 20, 10, window);
+    this->camera = Camera(60, ((float) WINDOW_WIDTH) / (float) WINDOW_HEIGHT, 0.001f, 1000.0f, 10, 10, window);
+    this->camera.SetPosition(glm::vec3(0.0f, 1.5f, 1.5f));
 
     glfwMakeContextCurrent(window);
     glfwSwapInterval(-1);
 
     glfwSetKeyCallback(window, Game::HandleKeyInput);
-
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     glewExperimental = GL_TRUE;
     if (glewInit() != GLEW_OK) {
@@ -54,7 +56,8 @@ Game::Game() : testShader("test"), wireframeShader("wireframe"), textureShader("
 
     testShader.Reload();
     wireframeShader.Reload();
-    textureShader.Reload();
+    chunkShader.Reload();
+    this->atlasTexture.Load("atlas.png");
 
     glClearColor(.3f, .3f, .4f, 1.0f);
     glViewport(0, 0, 1280, 720);
@@ -62,53 +65,20 @@ Game::Game() : testShader("test"), wireframeShader("wireframe"), textureShader("
     glEnable(GL_CULL_FACE);
     glDepthFunc(GL_LESS);
 
-    for (int x = 0; x < 32; ++x) {
-        for (int z = 0; z < 32; ++z) {
-            mb.AddQuad(
-                    VertexCoord(x,   0,   z  ),
-                    VertexCoord(x+1, 0,   z  ),
-                    VertexCoord(x+1, 0,   z+1),
-                    VertexCoord(x,   0,   z+1),
-                    false
-                    );
+    for (int x = 0; x < 16; ++x) {
+        for (int y = 0; y < 16; ++y) {
+            for (int z = 0; z < 16; ++z) {
+                this->testChunkMesh.m_Chunk->SetBlock(BlockCoordinate(x, y, z), 0);
+            }
         }
     }
 
-    this->testMesh.From(mb);
-
-    int width, height, channels;
-    unsigned char *img = stbi_load("../assets/textures/test.png", &width, &height, &channels, 0);
-    if(img == nullptr) {
-        printf("Error in loading the image\n");
-        exit(1);
+    for (int x = 0; x < 16; ++x) {
+        for (int z = 0; z < 16; ++z) {
+            this->testChunkMesh.m_Chunk->SetBlock(BlockCoordinate(x, 0, z), 1);
+            //if ((x+z) % 2 == 0) this->testChunkMesh.m_Chunk->SetBlock(BlockCoordinate(x, 1, z), 1);
+        }
     }
-    spdlog::info("Loaded image with a width of {}px, a height of {}px and {} channels", width, height, channels);
-
-    glGenTextures(1, &textureId);
-
-    glBindTexture(GL_TEXTURE_2D, textureId);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, img);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-
-    glGenVertexArrays(1, &texVAO);
-    glGenBuffers(1, &texVBO);
-    glBindVertexArray(texVAO);
-    glBindBuffer(GL_ARRAY_BUFFER, texVBO);
-    glBufferData(GL_ARRAY_BUFFER, (long)sizeof(ve), ve, GL_STATIC_DRAW);
-
-    //Pos
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void *) nullptr);
-    glEnableVertexAttribArray(0);
-    //Uv
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void *) (2*sizeof(float)));
-    glEnableVertexAttribArray(1);
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
 }
 
 void Game::HandleKeyInput(GLFWwindow *window, int key, int status, int action, int mods) {
@@ -123,38 +93,29 @@ void Game::HandleKeyInput(GLFWwindow *window, int key, int status, int action, i
 
 void Game::Update(double delta) {
     this->camera.Update((float) delta);
+    this->testChunkMesh.Update();
 }
 
 void Game::Render(double delta) {
+    atlasTexture.Bind();
     if (this->wireframe) {
         wireframeShader.Bind();
         wireframeShader.SetUniformMat4("projectionMat", this->camera.GetMatrix());
     } else {
-        testShader.Bind();
-        testShader.SetUniformMat4("projectionMat", this->camera.GetMatrix());
+        chunkShader.Bind();
+        chunkShader.SetUniformMat4("projectionMat", this->camera.GetMatrix());
+        chunkShader.SetUniformVec3("chunkPos", glm::vec3(0, 0, 0));
     }
-    this->testMesh.Bind();
-    glDrawElements(
-            GL_TRIANGLES,
-            mb.GetIndicesCount(),
-            GL_UNSIGNED_SHORT,
-            (void *) nullptr
-    );
-    this->testMesh.UnBind();
+    testChunkMesh.Bind();
+    testChunkMesh.Render();
+    testChunkMesh.UnBind();
+
     if (this->wireframe) {
         wireframeShader.UnBind();
     } else {
-        testShader.UnBind();
+        chunkShader.UnBind();
     }
-
-    textureShader.Bind();
-
-    glBindVertexArray(texVAO);
-    glBindBuffer(GL_ARRAY_BUFFER, texVBO);
-    glDrawArrays(GL_TRIANGLES, 0, sizeof(ve)/sizeof(float));
-    glBindVertexArray(0);
-
-    textureShader.UnBind();
+    atlasTexture.Unbind();
 }
 
 void Game::Run() {
@@ -195,7 +156,9 @@ Game *Game::GetInstance() {
     return &GAME;
 }
 
-void Game::HandleKey(int key, int status, int action, int mods) {
+static bool block = false;
+
+void Game::HandleKey(int key, __attribute__((unused)) int status, int action, __attribute__((unused)) int mods) {
     if (action != GLFW_PRESS) return;
     switch (key) {
         case GLFW_KEY_F1:
@@ -214,6 +177,22 @@ void Game::HandleKey(int key, int status, int action, int mods) {
             } else {
                 glDisable(GL_CULL_FACE);
             }
+            break;
+
+        case GLFW_KEY_F3:
+            this->camera.ToggleCursorState();
+            break;
+
+        case GLFW_KEY_F4:
+            this->testChunkMesh.m_Chunk->SetBlock(BlockCoordinate(0, 0, 0), (char)block);
+            block = !block;
+            break;
+
+        case GLFW_KEY_F5:
+            testShader.Reload();
+            wireframeShader.Reload();
+            chunkShader.Reload();
+            break;
 
         default:
             break;
