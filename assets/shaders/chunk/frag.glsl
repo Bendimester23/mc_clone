@@ -1,7 +1,7 @@
 #version 330 core
 
 in vec2 uv;
-flat in int light;
+flat in uint light;
 
 uniform sampler2D atlas;
 
@@ -12,5 +12,5 @@ void main() {
     if (fragColor.a == 0) {
         discard;
     }
-    fragColor *= min((light / 31.0f) + 0.5f, 1.0f);
+//    fragColor *= max(light / 15.0f, 0.2f);
 }

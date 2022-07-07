@@ -3,7 +3,6 @@
 //
 
 #include "Camera.h"
-#include "spdlog/spdlog.h"
 
 Camera::Camera(float fovy, float aspect, float near, float far, float mouse_sensitivity, float movement_speed, GLFWwindow* window) {
 
@@ -41,6 +40,9 @@ glm::mat4 Camera::GetMatrix() {
 }
 
 void Camera::Update(float delta) {
+    float mult = 1;
+    if (glfwGetKey(this->m_Window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) mult = 10;
+
     if (this->m_CursorGrabbed) {
         double xpos, ypos;
         glfwGetCursorPos(this->m_Window, &xpos, &ypos);
@@ -72,19 +74,19 @@ void Camera::Update(float delta) {
     }
 
     if (glfwGetKey(this->m_Window, GLFW_KEY_W ) == GLFW_PRESS){
-        this->m_Position += this->m_Forward * delta * this->m_Movement_speed;
+        this->m_Position += this->m_Forward * delta * this->m_Movement_speed * mult;
     }
 
     if (glfwGetKey(this->m_Window, GLFW_KEY_S ) == GLFW_PRESS){
-        this->m_Position -= this->m_Forward * delta * this->m_Movement_speed;
+        this->m_Position -= this->m_Forward * delta * this->m_Movement_speed * mult;
     }
 
     if (glfwGetKey(this->m_Window, GLFW_KEY_D ) == GLFW_PRESS){
-        this->m_Position += this->m_Right * delta * this->m_Movement_speed;
+        this->m_Position += this->m_Right * delta * this->m_Movement_speed * mult;
     }
 
     if (glfwGetKey(this->m_Window, GLFW_KEY_A ) == GLFW_PRESS){
-        this->m_Position -= this->m_Right * delta * this->m_Movement_speed;
+        this->m_Position -= this->m_Right * delta * this->m_Movement_speed * mult;
     }
 
     this->m_ViewMatrix = glm::lookAt(
@@ -129,8 +131,8 @@ void Camera::SetPosition(glm::vec3 pos) {
 }
 
 void Camera::ToggleCursorState() {
-    spdlog::info("Cursor grab toggled.");
     this->m_CursorGrabbed = !this->m_CursorGrabbed;
+    spdlog::info("Cursor grab toggled. {}", this->m_CursorGrabbed);
 
     if (this->m_CursorGrabbed) {
         glfwSetInputMode(this->m_Window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);

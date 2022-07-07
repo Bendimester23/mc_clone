@@ -4,8 +4,6 @@
 
 #include "ShaderProgram.h"
 
-#include <utility>
-
 void ShaderProgram::Bind() {
     if (this->m_HasError) {
         spdlog::warn("Tried to bind shader \"{}\" with compilation errors!", this->m_Name);

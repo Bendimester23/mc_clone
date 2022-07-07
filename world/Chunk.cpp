@@ -4,48 +4,28 @@
 
 #include "Chunk.h"
 
-std::string ChunkCoordinate::to_string() const {
-    return "ChunkCoordinate[x" + std::to_string(x) + "; y=" + std::to_string(y) + "; z=" + std::to_string(z);
-}
+namespace chunk {
+    void Chunk::SetBlock(BlockCoordinate blockPos, block::Block block) {
+        size_t pos = blockPos.x << 8 | blockPos.y << 4 | blockPos.z;
+        this->blocks[pos] = block.m_Id;
+        this->SetDirty(true);
+    }
 
-ChunkCoordinate::ChunkCoordinate(int pX, int pY, int pZ) {
-    this->x = pX;
-    this->y = pY;
-    this->z = pZ;
-}
+    block::Block Chunk::GetBlock(BlockCoordinate blockPos) {
+        size_t pos = blockPos.x << 8 | blockPos.y << 4 | blockPos.z;
+        return block::GetBlockById(this->blocks[pos]);
+    }
 
-ChunkCoordinate::ChunkCoordinate() = default;
+    void Chunk::SetDirty(bool dirty) {
+        this->m_Dirty = dirty;
+    }
 
-std::string BlockCoordinate::to_string() const {
-    return "BlockCoordinate[x" + std::to_string(x) + "; y=" + std::to_string(y) + "; z=" + std::to_string(z);
-}
+    bool Chunk::IsDirty() const {
+        return this->m_Dirty;
+    }
 
-BlockCoordinate::BlockCoordinate(char pX, char pY, char pZ) {
-    this->x = pX;
-    this->y = pY;
-    this->z = pZ;
-}
-
-void Chunk::SetBlock(BlockCoordinate blockPos, char block) {
-    size_t pos = blockPos.x << 8 | blockPos.y << 4 | blockPos.z;
-    this->blocks[pos] = block;
-    this->SetDirty(true);
-}
-
-char Chunk::GetBlock(BlockCoordinate blockPos) {
-    size_t pos = blockPos.x << 8 | blockPos.y << 4 | blockPos.z;
-    return this->blocks[pos];
-}
-
-void Chunk::SetDirty(bool dirty) {
-    this->m_Dirty = dirty;
-}
-
-bool Chunk::IsDirty() const {
-    return this->m_Dirty;
-}
-
-Chunk::Chunk(ChunkCoordinate pos) {
-    this->m_Position = pos;
-    this->m_Dirty = true;
+    Chunk::Chunk(ChunkCoordinate pos): m_Position(0, 0, 0) {
+        this->m_Position = pos;
+        this->m_Dirty = true;
+    }
 }

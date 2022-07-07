@@ -2,45 +2,31 @@
 // Created by bendi on 2022. 07. 05..
 //
 
+#pragma once
 #ifndef MC_CLONE_CHUNK_H
 #define MC_CLONE_CHUNK_H
 
-#include <string>
+#include "block/Block.h"
+#include "./types.h"
 
-struct ChunkCoordinate {
-    ChunkCoordinate(int pX, int pY, int pZ);
+namespace chunk {
+    using namespace block;
+    struct Chunk {
+        ChunkCoordinate m_Position;
+        short blocks[16 * 16 * 16];
+        bool m_Dirty;
 
-    ChunkCoordinate();
+    public:
+        Chunk(ChunkCoordinate pos);
 
-    int x, y, z;
+        void SetBlock(BlockCoordinate blockPos, Block bl);
 
-    std::string to_string() const;
-};
+        Block GetBlock(BlockCoordinate blockPos);
 
-struct BlockCoordinate {
-    BlockCoordinate(char pX, char pY, char pZ);
+        void SetDirty(bool dirty);
 
-    char x, y, z;
-
-    std::string to_string() const;
-};
-
-struct Chunk {
-    ChunkCoordinate m_Position;
-    char blocks[16*16*16];
-    bool m_Dirty;
-
-public:
-    Chunk(ChunkCoordinate pos);
-
-    void SetBlock(BlockCoordinate blockPos, char block);
-
-    char GetBlock(BlockCoordinate blockPos);
-
-    void SetDirty(bool dirty);
-
-    bool IsDirty() const;
-};
-
+        bool IsDirty() const;
+    };
+}
 
 #endif //MC_CLONE_CHUNK_H

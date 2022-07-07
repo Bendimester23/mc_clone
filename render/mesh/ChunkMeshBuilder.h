@@ -7,14 +7,7 @@
 
 
 #include <vector>
-#include "../../world/Chunk.h"
-
-struct SimpleUV {
-    char u;
-    char v;
-
-    SimpleUV(char pU, char pV);
-};
+#include "../../world/types.h"
 
 struct ChunkVertex {
     BlockCoordinate pos = BlockCoordinate(0, 0, 0);
@@ -30,7 +23,7 @@ struct ChunkVertex {
 //x    y    z    u    v    light
 //0000 0000 0000 0000 0000 0000  0000 0000
 class ChunkMeshBuilder {
-    std::vector<int> m_Vertices;
+    std::vector<unsigned int> m_Vertices;
     std::vector<unsigned short> m_Indices;
 
 public:
@@ -38,11 +31,11 @@ public:
 
     void AddVertex(ChunkVertex vertex);
 
-    int PackVertex(ChunkVertex vertex);
+    unsigned int PackVertex(ChunkVertex vertex);
 
     void AddQuad(ChunkVertex a, ChunkVertex b, ChunkVertex c, ChunkVertex d, bool cc);
 
-    std::vector<int> GetVertices();
+    std::vector<unsigned int> GetVertices();
 
     std::vector<unsigned short> GetIndices();
 

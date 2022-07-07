@@ -4,28 +4,31 @@
 
 #include "ChunkMeshBuilder.h"
 
-//x    y    z    u    v    light
-//0000 0000 0000 0000 0000 0000  0000 0000 0 0  1200062464
+//x     y     z     u    v    light
+//00000 00000 00000 0000 0000 0000  00000
 ChunkMeshBuilder::ChunkMeshBuilder() {
     this->m_Vertices.reserve(16 * 16 * 16 * 4);
     this->m_Indices.reserve(16 * 16 * 16 * 4);
 }
 
-int ChunkMeshBuilder::PackVertex(ChunkVertex vertex) {
-    int data = 0;
-    data |= (vertex.pos.x & 15) << 28;
-    data |= (vertex.pos.y & 15) << 24;
-    data |= (vertex.pos.z & 15) << 20;
+unsigned int ChunkMeshBuilder::PackVertex(ChunkVertex vertex) {
+    unsigned int data = 0;
+    data |= (vertex.pos.x & 31) << 27;
+    data |= (vertex.pos.y & 31) << 22;
+    data |= (vertex.pos.z & 31) << 17;
 
-    data |= (vertex.uv.u & 15) << 16;
-    data |= (vertex.uv.v & 15) << 12;
+    data |= (vertex.uv.u & 15) << 13;
+    data |= (vertex.uv.v & 15) << 9;
 
-    data |= (vertex.light & 15) << 8;
+    data |= (vertex.light & 15) << 5;
+    if (vertex.pos.x == 16 || vertex.pos.z == 16) {
+        int i = 0;
+    }
     return data;
 }
 
 void ChunkMeshBuilder::AddVertex(ChunkVertex vertex) {
-    int vert = this->PackVertex(vertex);
+    unsigned int vert = this->PackVertex(vertex);
     for (int i = 0; i < this->m_Indices.size(); i++) {
         if (this->m_Indices[i] == vert) {
             this->m_Indices.push_back(i);
@@ -36,7 +39,7 @@ void ChunkMeshBuilder::AddVertex(ChunkVertex vertex) {
     this->m_Indices.push_back(this->m_Vertices.size()-1);
 }
 
-std::vector<int> ChunkMeshBuilder::GetVertices() {
+std::vector<unsigned int> ChunkMeshBuilder::GetVertices() {
     return this->m_Vertices;
 }
 
@@ -77,9 +80,4 @@ ChunkVertex::ChunkVertex(char px, char py, char pz, char pu, char pv, char pligh
     this->pos = BlockCoordinate(px, py, pz);
     this->uv = SimpleUV(pu, pv);
     this->light = plight;
-}
-
-SimpleUV::SimpleUV(char pU, char pV) {
-    this->u = pU;
-    this->v = pV;
 }

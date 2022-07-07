@@ -10,6 +10,7 @@
 #include "GLFW/glfw3.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include "../config.h"
+#include "spdlog/spdlog.h"
 
 class Camera {
     glm::mat4 m_ProjectionMatrix;

@@ -9,28 +9,34 @@
 #include "../../world/Chunk.h"
 #include "GL/glew.h"
 #include <string>
-#include "MeshBuilder.h"
+#include <cstring>
+#include "GLFW/glfw3.h"
+#include "spdlog/spdlog.h"
+#include "ChunkMeshBuilder.h"
 
-class ChunkMesh {
-    GLuint m_VAO{}, m_VBO{}, m_IndexBuffer{};
-    bool m_Bound = false;
-    int indicesCount = 0;
+namespace chunk {
+    class ChunkMesh {
+        GLuint m_VAO{}, m_VBO{}, m_IndexBuffer{};
+        bool m_Bound = false;
+        int indicesCount = 0;
 
-    void Rebuild();
+        void Rebuild();
 
-    bool IsAirAt(BlockCoordinate pos);
-public:
-    Chunk *m_Chunk;
-    explicit ChunkMesh(Chunk* chunk);
+    public:
+        Chunk *m_Chunk;
 
-    void Bind();
+        explicit ChunkMesh(Chunk *chunk);
 
-    void UnBind();
+        void Bind();
 
-    void Render();
+        void UnBind();
 
-    void Update();
-};
+        void Render();
 
+        bool Update();
+
+        bool IsAirAt(BlockCoordinate pos);
+    };
+}
 
 #endif //MC_CLONE_CHUNKMESH_H

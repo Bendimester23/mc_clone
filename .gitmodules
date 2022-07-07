@@ -13,3 +13,6 @@
 [submodule "thirdparty/stb"]
 	path = thirdparty/stb
 	url = git@github.com:nothings/stb.git
+[submodule "thirdparty/perlin-noise"]
+	path = thirdparty/perlin-noise
+	url = git@github.com:Reputeless/PerlinNoise.git

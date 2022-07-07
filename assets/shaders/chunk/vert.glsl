@@ -1,25 +1,28 @@
 #version 330 core
 
-//x    y    z    u    v    light
-//0000 0000 0000 0000 0000 0000  0000 0000
-layout (location = 0) in int data;
+//x     y     z     u    v    light
+//00000 00000 00000 0000 0000 0000  00000
+layout (location = 0) in uint data;
 
 uniform mat4 projectionMat;
 uniform vec3 chunkPos;
 
 out vec2 uv;
-flat out int light;
+flat out uint light;
+
+uint maskP = uint(31);
+uint maskU = uint(15);
 
 vec3 unpackData() {
-    int x = data >> 28;
-    int y = (data >> 24) & 15;
-    int z = (data >> 20) & 15;
+    uint x = data >> 27;
+    uint y = (data >> 22) & maskP;
+    uint z = (data >> 17) & maskP;
 
-    int u = (data >> 16) & 15;
-    int v = (data >> 12) & 15;
+    uint u = (data >> 13) & maskU;
+    uint v = (data >> 9) & maskU;
     uv = vec2(u, v);
 
-    light = (data >> 8) & 15;
+    light = (data >> 5) & maskU;
     return vec3(x, y, z);
 }
 
