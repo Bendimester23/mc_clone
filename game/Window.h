@@ -9,6 +9,8 @@
 #include <GLFW/glfw3.h>
 #include <string>
 #include <spdlog/spdlog.h>
+#include <stb_image.h>
+#include "../config.h"
 
 class Window {
     GLFWwindow* m_Window;

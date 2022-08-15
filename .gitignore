@@ -1,0 +1,6 @@
+/dist.zip
+/dist/
+/build/
+/cmake-build-debug/
+/cmake-build-minsizerel/
+/cmake-build-windows/

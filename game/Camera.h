@@ -32,6 +32,8 @@ public:
     void Update(float delta);
 
     glm::mat4 GetMatrix();
+
+    glm::mat4 GetProjectionMatrix();
 };
 
 

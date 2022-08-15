@@ -38,12 +38,18 @@ Window::Window(int width, int height, const std::string &title) {
         exit(1);
     }
 
+    //Set da icon
+    GLFWimage images[1];
+    images[0].pixels = stbi_load(fmt::format("{}icon.png", TEXTURE_LOC).c_str(), &images[0].width, &images[0].height, 0, 4);
+    glfwSetWindowIcon(m_Window, 1, images);
+    stbi_image_free(images[0].pixels);
+
     glClearColor(.3f, .3f, .4f, 1.0f);
     glViewport(0, 0, 1280, 720);
     //TODO turn these back on
-//    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_DEPTH_TEST);
 //    glEnable(GL_CULL_FACE);
-//    glDepthFunc(GL_LESS);
+    glDepthFunc(GL_LESS);
 }
 
 bool Window::IsOpen() {

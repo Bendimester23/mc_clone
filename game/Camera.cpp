@@ -37,6 +37,10 @@ glm::mat4 Camera::GetMatrix() {
     return this->m_ProjectionMatrix * this->m_ViewMatrix;
 }
 
+glm::mat4 Camera::GetProjectionMatrix() {
+    return this->m_ProjectionMatrix;
+}
+
 void Camera::Update(float delta) {
     double xpos, ypos;
     glfwGetCursorPos(this->m_Window, &xpos, &ypos);
@@ -58,6 +62,7 @@ void Camera::Update(float delta) {
             std::cos(angleH) * std::cos(angleV)
     );
 
+
     this->m_Right = glm::vec3(
             std::sin(angleV - 3.14f/2.0f),
             0,
@@ -65,6 +70,11 @@ void Camera::Update(float delta) {
     );
 
     this->m_Up = glm::cross( this->m_Right, this->m_Forward );
+
+    if (glfwGetKey(this->m_Window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+        //Fast boi
+        delta *= 5;
+    }
 
     if (glfwGetKey(this->m_Window, GLFW_KEY_W ) == GLFW_PRESS){
         this->m_Position += this->m_Forward * delta * this->m_Movement_speed;

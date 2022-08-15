@@ -89,4 +89,12 @@ namespace gl {
         }
         glUniformMatrix4fv(this->GetUniformLocation(name), 1, GL_FALSE, &value[0][0]);
     }
+
+    void ShaderProgram::SetUniformVec3(const std::string &name, glm::vec3 value) {
+        if (!this->m_Bound) {
+            spdlog::warn(R"(Tried to set uniform "{}" on unbound shader "{}"!)", name, this->m_Name);
+            return;
+        }
+        glUniform3f(this->GetUniformLocation(name), value.x, value.y, value.z);
+    }
 } // gl

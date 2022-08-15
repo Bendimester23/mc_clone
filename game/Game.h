@@ -8,12 +8,16 @@
 #include "Window.h"
 #include <GLFW/glfw3.h>
 #include "./gl/ShaderProgram.h"
+#include "./gl/Texture.h"
 #include "./Camera.h"
+#include "./renderer/WorldRenderer.h"
 
 class Game {
     Window m_Window;
     gl::ShaderProgram shader;
     Camera m_Camera;
+    gl::Texture m_TestTexture;
+    renderer::WorldRenderer m_WorldRenderer;
 
     Game();
 
