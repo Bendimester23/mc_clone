@@ -22,7 +22,7 @@ public:
 
     static void PollEvents();
 
-    static void Clear();
+    void Clear();
 
     void SwapBuffers();
 

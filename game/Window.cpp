@@ -14,12 +14,13 @@ Window::Window(int width, int height, const std::string &title) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
     glfwSetErrorCallback([](int, const char *msg) {
 
         spdlog::error("GLFW error: {}", msg);
     });
+
 
     this->m_Window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
     if (m_Window == nullptr) {
@@ -44,11 +45,14 @@ Window::Window(int width, int height, const std::string &title) {
     glfwSetWindowIcon(m_Window, 1, images);
     stbi_image_free(images[0].pixels);
 
+
+    glfwMaximizeWindow(m_Window);
+
     glClearColor(.3f, .3f, .4f, 1.0f);
     glViewport(0, 0, 1280, 720);
     //TODO turn these back on
     glEnable(GL_DEPTH_TEST);
-//    glEnable(GL_CULL_FACE);
+    glEnable(GL_CULL_FACE);
     glDepthFunc(GL_LESS);
 }
 
@@ -63,6 +67,11 @@ void Window::PollEvents() {
 void Window::Clear()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    int width, height;
+    glfwGetWindowSize(m_Window, &width, &height);
+
+    glViewport(0, 0, width, height);
 }
 
 void Window::SwapBuffers() {

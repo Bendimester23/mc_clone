@@ -97,4 +97,12 @@ namespace gl {
         }
         glUniform3f(this->GetUniformLocation(name), value.x, value.y, value.z);
     }
+
+    void ShaderProgram::SetUniformBool(const std::string& name, bool value) {
+        if (!this->m_Bound) {
+            spdlog::warn(R"(Tried to set uniform "{}" on unbound shader "{}"!)", name, this->m_Name);
+            return;
+        }
+        glUniform1i(this->GetUniformLocation(name), value);
+    }
 } // gl

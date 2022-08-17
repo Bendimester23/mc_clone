@@ -37,6 +37,8 @@ namespace gl {
         void SetUniformMat4(const std::string& name, glm::mat4 value);
 
         void SetUniformVec3(const std::string& name, glm::vec3 value);
+
+        void SetUniformBool(const std::string& name, bool value);
     };
 
 } // gl

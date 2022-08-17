@@ -27,16 +27,17 @@ void Game::Run() {
     double lastFrameEnd = glfwGetTime();
     double lastDelta = 1.0 / 60;
 
+    //never gonna give you up
     float vertices[]{
-            -10.0f, -10.0f, 10.0f, 0.0f, 1.0f,
-            10.0f, -10.0f, 10.0f, 1.0f, 1.0f,
-            10.0f, 10.0f, 10.0f, 1.0f, 0.0f,
-            -10.0f, 10.0f, 10.0f, 0.0f, 0.0f,
+               0.0f,    0.0f, -10.0f, 0.0f, 1.0f,
+             100.0f,    0.0f, -10.0f, 1.0f, 1.0f,
+             100.0f,  100.0f, -10.0f, 1.0f, 0.0f,
+               0.0f,  100.0f, -10.0f, 0.0f, 0.0f,
     };
 
     unsigned short indicies[]{
             0, 1, 2,
-            0, 3, 2,
+            0, 2, 3,
     };
 
     GLuint VAO;
@@ -61,8 +62,6 @@ void Game::Run() {
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *) (3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
-    m_TestTexture.Bind();
-
     while (m_Window.IsOpen()) {
         double now = glfwGetTime();
         double delta = now - lastFrameEnd;
@@ -82,11 +81,12 @@ void Game::Run() {
         //Update goes here
         this->Update(delta);
 
-        Window::Clear();
+        m_Window.Clear();
 
         shader.Bind();
         shader.SetUniformMat4("projectionMatrix", this->m_Camera.GetMatrix());
 
+        glDisable(GL_CULL_FACE);
         m_TestTexture.Bind();
         glBindVertexArray(VAO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexVBO);
@@ -102,7 +102,8 @@ void Game::Run() {
         shader.UnBind();
         m_TestTexture.UnBind();
 
-        this->m_WorldRenderer.Render(delta, this->m_Camera.GetMatrix());
+        glEnable(GL_CULL_FACE);
+        this->m_WorldRenderer.Render(delta, this->m_Camera.GetMatrix(), this->m_Wireframe);
 
         m_Window.SwapBuffers();
     }
@@ -114,6 +115,8 @@ void Game::ProcessInput(GLFWwindow *window, int key, int scancode, int action, i
     if (action != GLFW_PRESS) return;
     if (key == GLFW_KEY_ESCAPE) {
         Game::GetInstance()->Quit();
+    } else if (key == GLFW_KEY_F1) {
+        Game::GetInstance()->ToggleWireframeMode();
     }
 }
 
@@ -123,4 +126,13 @@ void Game::Update(double delta) {
 
 void Game::Quit() {
     m_Window.Close();
+}
+
+void Game::ToggleWireframeMode() {
+    this->m_Wireframe = !this->m_Wireframe;
+    if (this->m_Wireframe) {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    } else {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    }
 }

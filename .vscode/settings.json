@@ -1,3 +1,11 @@
 {
-    "cmake.configureOnOpen": true
+    "cmake.configureOnOpen": true,
+    "files.associations": {
+        "*.tcc": "cpp",
+        "bitset": "cpp",
+        "compare": "cpp",
+        "system_error": "cpp",
+        "typeinfo": "cpp",
+        "mutex": "cpp"
+    }
 }

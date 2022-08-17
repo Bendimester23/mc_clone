@@ -46,16 +46,16 @@ namespace mesh {
             m_Indices.push_back(i2);
             m_Indices.push_back(i3);
 
-            m_Indices.push_back(i1);
             m_Indices.push_back(i4);
+            m_Indices.push_back(i1);
             m_Indices.push_back(i3);
         } else {
             m_Indices.push_back(i2);
             m_Indices.push_back(i1);
             m_Indices.push_back(i3);
 
-            m_Indices.push_back(i4);
             m_Indices.push_back(i1);
+            m_Indices.push_back(i4);
             m_Indices.push_back(i3);
         }
     }

@@ -10,6 +10,7 @@
 #include "../gl/ShaderProgram.h"
 #include "../mesh/ChunkMeshBuilder.h"
 #include <glm/glm.hpp>
+#include "../world/Chunk.h"
 
 namespace renderer {
 
@@ -20,13 +21,16 @@ namespace renderer {
         gl::Texture m_AtlasTexture;
         gl::ShaderProgram m_ChunkShader;
         size_t m_IndicesCount;
+        mesh::ChunkMeshBuilder b;
 
     public:
         WorldRenderer();
 
-        void Render(double delta, glm::mat4 matrix);
+        void Render(double delta, glm::mat4 matrix, bool wireframe);
 
         void Update(double delta);
+
+        void AddBlock(char x, char y, char z);
     };
 
 } // renderer

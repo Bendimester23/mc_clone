@@ -18,6 +18,7 @@ class Game {
     Camera m_Camera;
     gl::Texture m_TestTexture;
     renderer::WorldRenderer m_WorldRenderer;
+    bool m_Wireframe;
 
     Game();
 
@@ -29,6 +30,8 @@ public:
     void Quit();
 
     void Update(double delta);
+
+    void ToggleWireframeMode();
 
     static Game* GetInstance();
 

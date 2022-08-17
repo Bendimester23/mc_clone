@@ -1,0 +1,15 @@
+{
+    "tasks": [{
+        "type": "shell",
+        "label": "Build target",
+        "command": "ninja",
+        "options": {
+            "cwd": "${workspaceFolder}/build/"
+        },
+        "problemMatcher": "$gcc",
+        "group": {
+            "kind": "build",
+            "isDefault": true
+        }
+    }]
+}
