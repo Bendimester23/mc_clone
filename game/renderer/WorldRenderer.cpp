@@ -55,6 +55,7 @@ namespace renderer
 
     void WorldRenderer::Update(double delta)
     {
+        
     }
 
     void WorldRenderer::Render(double delta, glm::mat4 matrix, bool wireframe)

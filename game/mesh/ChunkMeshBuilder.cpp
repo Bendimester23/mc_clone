@@ -6,8 +6,8 @@
 
 namespace mesh {
     ChunkMeshBuilder::ChunkMeshBuilder(): m_Indices(), m_Vertices() {
-        this->m_Indices.reserve(16384);
-        this->m_Vertices.reserve(16384);
+        this->m_Indices.reserve(65536);
+        this->m_Vertices.reserve(65536);
     }
 
     ChunkMeshBuilder::~ChunkMeshBuilder() {
