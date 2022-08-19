@@ -2,8 +2,9 @@
 
 namespace world
 {
-    Chunk::Chunk() {
+    /*Chunk::Chunk() {
         //Set everything to air
+        this->m_Mutex.lock();
         for (char x = 0; x < 16; x++)
         {
             for (char y = 0; y < 16; y++)
@@ -14,7 +15,8 @@ namespace world
                 }
             }
         }
-    }
+        this->m_Mutex.unlock();
+    }*/
 
     char Chunk::GetBlockAt(char x, char y, char z) {
         this->m_Mutex.lock();

@@ -20,7 +20,9 @@ namespace world
         GLuint VBO;
         GLuint indexVBO;
 
-        Chunk();
+        //Chunk();
+        
+        void Init();
 
         char GetBlockAt(char x, char y, char z);
 

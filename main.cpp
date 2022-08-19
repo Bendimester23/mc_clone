@@ -3,6 +3,15 @@
 #include <stb_image.h>
 #undef STB_IMAGE_IMPLEMENTATION
 
+
+#ifdef __WIN32
+extern "C" {
+// Enable dedicated graphics
+__declspec(dllexport) bool NvOptimusEnablement = true;
+__declspec(dllexport) bool AmdPowerXpressRequestHighPerformance = true;
+}
+#endif // __WIN32
+
 #include <spdlog/spdlog.h>
 #include "game/Game.h"
 

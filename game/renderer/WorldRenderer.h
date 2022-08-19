@@ -11,6 +11,7 @@
 #include "../mesh/ChunkMeshBuilder.h"
 #include <glm/glm.hpp>
 #include "../world/Chunk.h"
+#include "../world/World.h"
 
 namespace renderer {
 
@@ -22,6 +23,7 @@ namespace renderer {
         gl::ShaderProgram m_ChunkShader;
         size_t m_IndicesCount;
         mesh::ChunkMeshBuilder b;
+        world::World m_World;
 
     public:
         WorldRenderer();
@@ -31,6 +33,8 @@ namespace renderer {
         void Update(double delta);
 
         void AddBlock(char x, char y, char z);
+
+        world::World* GetWorld();
     };
 
 } // renderer

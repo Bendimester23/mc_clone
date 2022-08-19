@@ -11,8 +11,8 @@ Game *Game::GetInstance() {
 
 Game::Game()
         : m_Window(1280, 720, "Minecraft Clone 2 | Loading..."), shader("test"),
-          m_Camera(70, 1280.0f / 720.0f, 0.01f, 1000.0f, 15, 10, m_Window.GetHandle()), m_TestTexture("test"),
-          m_WorldRenderer() {
+          m_Camera(70, 1280.0f / 720.0f, 0.01f, 2000.0f, 15, 10, m_Window.GetHandle()), m_TestTexture("test"),
+          m_WorldRenderer(), m_ChunkWorkerThread(Game::ChunkWorkerStart), m_Running(true), m_Skybox(1000.0f) {
     glfwSetKeyCallback(m_Window.GetHandle(), Game::ProcessInput);
     glfwSetInputMode(this->m_Window.GetHandle(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 }
@@ -102,13 +102,27 @@ void Game::Run() {
         shader.UnBind();
         m_TestTexture.UnBind();
 
+        this->m_Skybox.Render(this->m_Camera.GetProjectionMatrix());
         glEnable(GL_CULL_FACE);
         this->m_WorldRenderer.Render(delta, this->m_Camera.GetMatrix(), this->m_Wireframe);
 
         m_Window.SwapBuffers();
     }
 
+    this->m_Running = false;
+
+    this->m_ChunkWorkerThread.join();
+
     m_Window.Dispose();
+}
+
+void Game::ChunkWorkerStart() {
+    //Don't start too early
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+
+    //I know it looks bad, but it does work
+    auto inst = Game::GetInstance();
+    inst->m_WorldRenderer.GetWorld()->ChunkBuildWorker(&inst->m_Running);
 }
 
 void Game::ProcessInput(GLFWwindow *window, int key, int scancode, int action, int mods) {
@@ -122,6 +136,7 @@ void Game::ProcessInput(GLFWwindow *window, int key, int scancode, int action, i
 
 void Game::Update(double delta) {
     this->m_Camera.Update((float) delta);
+    this->m_WorldRenderer.Update(delta);
 }
 
 void Game::Quit() {

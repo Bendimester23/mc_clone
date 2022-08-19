@@ -12,7 +12,7 @@ namespace renderer
     //+x east
     //-x west
 
-    WorldRenderer::WorldRenderer() : m_AtlasTexture("atlas2"), m_ChunkShader("chunk_solid"), b()
+    WorldRenderer::WorldRenderer() : m_AtlasTexture("atlas2"), m_ChunkShader("chunk_solid"), b(), m_World()
     {
         this->m_ChunkShader.Reload();
 
@@ -51,11 +51,13 @@ namespace renderer
 
         glVertexAttribIPointer(0, 1, GL_UNSIGNED_INT, sizeof(unsigned int), nullptr);
         glEnableVertexAttribArray(0);
+
+        this->m_World.GenerateChunk(world::ChunkCoord { .x = 0, .y = 0, .z = 0 });
     }
 
     void WorldRenderer::Update(double delta)
     {
-        
+        this->m_World.Update(delta);
     }
 
     void WorldRenderer::Render(double delta, glm::mat4 matrix, bool wireframe)
@@ -75,7 +77,6 @@ namespace renderer
             {
                 this->m_ChunkShader.SetUniformVec3("chunkPos", glm::vec3(i, 0, k));
 
-                // Rendering code goes here
                 glDrawElements(
                     GL_TRIANGLES,
                     (int)m_IndicesCount,
@@ -158,5 +159,9 @@ namespace renderer
                 mesh::VertexData{.x = x1, .y = y2, .z = z1, .u = base, .v = 0, .light = 15, .side = 2},
                 true);
         }
+    }
+
+    world::World* WorldRenderer::GetWorld() {
+        return &this->m_World;
     }
 } // renderer

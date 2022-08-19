@@ -13,6 +13,7 @@
 class Camera {
     glm::mat4 m_ProjectionMatrix;
     glm::mat4 m_ViewMatrix;
+    glm::mat4 m_LookMatrix;
 
     glm::vec3 m_Position;
     glm::vec3 m_Forward;

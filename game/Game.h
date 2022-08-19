@@ -7,10 +7,13 @@
 
 #include "Window.h"
 #include <GLFW/glfw3.h>
+#include <thread>
+#include <atomic>
 #include "./gl/ShaderProgram.h"
 #include "./gl/Texture.h"
 #include "./Camera.h"
 #include "./renderer/WorldRenderer.h"
+#include "./renderer/Skybox.h"
 
 class Game {
     Window m_Window;
@@ -18,7 +21,10 @@ class Game {
     Camera m_Camera;
     gl::Texture m_TestTexture;
     renderer::WorldRenderer m_WorldRenderer;
+    renderer::Skybox m_Skybox;
     bool m_Wireframe;
+    std::thread m_ChunkWorkerThread;
+    bool m_Running;
 
     Game();
 
@@ -33,7 +39,11 @@ public:
 
     void ToggleWireframeMode();
 
+    bool IsRunning();
+
     static Game* GetInstance();
+
+    static void ChunkWorkerStart();
 
     static void ProcessInput(GLFWwindow* window, int key, int scancode, int action, int mods);
 };

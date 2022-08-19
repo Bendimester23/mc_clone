@@ -1,6 +1,8 @@
 #ifndef MC_CLONE_2_CHUNKCOORD_H
 #define MC_CLONE_2_CHUNKCOORD_H
 
+#include <functional>
+
 namespace world
 {
     struct ChunkCoord
@@ -10,7 +12,7 @@ namespace world
         int y;
         int z;
 
-        bool operator==(const ChunkCoord &other);
+        bool operator==(ChunkCoord other);
     };
 } // namespace world
 

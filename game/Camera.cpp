@@ -27,9 +27,15 @@ Camera::Camera(float fovy, float aspect, float near, float far, float mouse_sens
     );
 
     this->m_ViewMatrix = glm::lookAt(
-            glm::vec3(m_Position),
-            glm::vec3(m_Position + m_Forward),
-            glm::vec3(m_Up)
+            m_Position,
+            m_Position + m_Forward,
+            m_Up
+    );
+
+    this->m_ViewMatrix = glm::lookAt(
+        glm::vec3(),
+        m_Forward,
+        m_Up
     );
 }
 
@@ -38,7 +44,7 @@ glm::mat4 Camera::GetMatrix() {
 }
 
 glm::mat4 Camera::GetProjectionMatrix() {
-    return this->m_ProjectionMatrix;
+    return this->m_ProjectionMatrix * this->m_LookMatrix;
 }
 
 void Camera::Update(float delta) {
@@ -96,5 +102,11 @@ void Camera::Update(float delta) {
             this->m_Position,
             this->m_Position+this->m_Forward,
             this->m_Up
+    );
+
+    this->m_LookMatrix = glm::lookAt(
+        glm::vec3(),
+        m_Forward,
+        m_Up
     );
 }

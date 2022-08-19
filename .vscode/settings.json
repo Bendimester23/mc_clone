@@ -6,6 +6,7 @@
         "compare": "cpp",
         "system_error": "cpp",
         "typeinfo": "cpp",
-        "mutex": "cpp"
+        "mutex": "cpp",
+        "queue": "cpp"
     }
 }
