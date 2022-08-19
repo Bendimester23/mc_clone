@@ -3,15 +3,19 @@
 
 #include <mutex>
 #include <glad/glad.h>
+#include <array>
+#include "../../config.h"
+#include "./ChunkCoord.h"
 
 namespace world
 {
     class Chunk
     {
-        char m_Blocks[16][16][16];
+        ChunkCoord m_Pos;
+        std::array<char, CHUNK_VOLUME> m_Blocks;
         bool m_Dirty;
         bool m_NeedsUpload;
-        std::mutex m_Mutex;
+        //std::mutex m_Mutex;
 
 
     public:
@@ -31,6 +35,8 @@ namespace world
         void MarkDirty();
 
         void MarkDone();
+
+        ChunkCoord GetPosition();
 
         /**
          * @brief marks the chunk both not dirty and uploaded

@@ -4,7 +4,7 @@ namespace world
 {
     void World::Clear()
     {
-        //this->m_Chunks.clear();
+        this->m_Chunks.clear();
         this->m_BuildQueue.clear();
         this->m_UploadQueue.clear();
     }
@@ -21,8 +21,8 @@ namespace world
 
     void World::GenerateChunk(ChunkCoord pos)
     {
-        //auto ch = new Chunk();
-        //this->m_Chunks[pos] = ch;
+        auto ch = Chunk();
+        this->m_Chunks[pos] = ch;
         this->m_BuildQueue.push_back(pos);
     }
 

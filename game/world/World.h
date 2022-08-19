@@ -3,6 +3,7 @@
 
 #include <unordered_map>
 #include <thread>
+#include <memory>
 #include <spdlog/spdlog.h>
 #include <glm/glm.hpp>
 #include "./ChunkCoord.h"
@@ -13,7 +14,7 @@ namespace world
 {
     class World {
         //TODO fix this thing
-        //std::unordered_map<ChunkCoord, Chunk*> m_Chunks;
+        std::unordered_map<ChunkCoord, Chunk> m_Chunks;
         utils::TaskQueue<ChunkCoord> m_BuildQueue;
         utils::TaskQueue<ChunkCoord> m_UploadQueue;
         std::thread m_ChunkBuildThread;

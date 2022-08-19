@@ -11,4 +11,6 @@
 #define WINDOW_WIDTH 1280
 #define WINDOW_HEIGHT 720
 
+#define CHUNK_VOLUME 4096
+
 #endif //MC_CLONE_2_CONFIG_H
