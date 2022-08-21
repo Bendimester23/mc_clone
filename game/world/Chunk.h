@@ -4,6 +4,8 @@
 #include <mutex>
 #include <glad/glad.h>
 #include <array>
+#include <spdlog/spdlog.h>
+#include <vector>
 #include "../../config.h"
 #include "./ChunkCoord.h"
 
@@ -16,7 +18,8 @@ namespace world
         bool m_Dirty;
         bool m_NeedsUpload;
         //std::mutex m_Mutex;
-
+        bool m_Uploaded;
+        size_t m_IndicesCount;
 
     public:
 
@@ -24,7 +27,10 @@ namespace world
         GLuint VBO;
         GLuint indexVBO;
 
-        //Chunk();
+        std::vector<unsigned int> m_Vertices;
+        std::vector<unsigned short> m_Indices;
+
+        Chunk(ChunkCoord pos) noexcept;
         
         void Init();
 
@@ -44,9 +50,13 @@ namespace world
          */
         void MarkClean();
 
+        void Upload();
+
         void Lock();
 
         void Unlock();
+
+        void Render();
     };
 } // namespace world
 

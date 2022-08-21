@@ -2,21 +2,22 @@
 #define MC_CLONE_2_WORLD_H
 
 #include <unordered_map>
+#include <deque>
 #include <thread>
 #include <memory>
+#include <list>
 #include <spdlog/spdlog.h>
 #include <glm/glm.hpp>
 #include "./ChunkCoord.h"
 #include "./Chunk.h"
-#include "../../utils/TaskQueue.h"
+#include "../mesh/ChunkMeshBuilder.h"
 
 namespace world
 {
     class World {
-        //TODO fix this thing
-        std::unordered_map<ChunkCoord, Chunk> m_Chunks;
-        utils::TaskQueue<ChunkCoord> m_BuildQueue;
-        utils::TaskQueue<ChunkCoord> m_UploadQueue;
+        std::deque<Chunk> m_Chunks;
+        std::list<Chunk*> m_UploadQueue;
+        std::list<Chunk*> m_BuildQueue;
         std::thread m_ChunkBuildThread;
 
     public:
@@ -26,7 +27,11 @@ namespace world
 
         void Update(double delta);
 
+        Chunk* GetChunk(ChunkCoord pos);
+
         void GenerateChunk(ChunkCoord pos);
+
+        std::deque<Chunk> GetChunks();
     };
 } // namespace world
 

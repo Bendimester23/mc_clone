@@ -24,11 +24,6 @@ namespace renderer
             }
         }
 
-        world::Chunk ch;
-        ch.SetBlockAt(4, 2, 0, 69);
-
-        assert(ch.GetBlockAt(4, 2, 0) == 69);
-
         unsigned int vertices[b.GetVertices().size()];
         memcpy(vertices, b.GetVertices().data(), b.GetVertices().size() * sizeof(unsigned int));
 
@@ -71,18 +66,10 @@ namespace renderer
         this->m_ChunkShader.SetUniformMat4("projectionMatrix", matrix);
         this->m_ChunkShader.SetUniformBool("wireframe", wireframe);
 
-        for (size_t i = 0; i < 10; i++)
-        {
-            for (size_t k = 0; k < 10; k++)
-            {
-                this->m_ChunkShader.SetUniformVec3("chunkPos", glm::vec3(i, 0, k));
-
-                glDrawElements(
-                    GL_TRIANGLES,
-                    (int)m_IndicesCount,
-                    GL_UNSIGNED_SHORT,
-                    nullptr);
-            }
+        for (auto &e : this->m_World.GetChunks()) {
+            auto pos = e.GetPosition();
+            this->m_ChunkShader.SetUniformVec3("chunkPos", glm::vec3(pos.x, pos.y, pos.z));
+            e.Render();
         }
 
         glBindVertexArray(0);
