@@ -34,6 +34,8 @@ public:
 
     glm::mat4 GetMatrix();
 
+    glm::vec3 GetPosition();
+
     glm::mat4 GetProjectionMatrix();
 };
 

@@ -5,6 +5,39 @@ namespace world
     bool ChunkCoord::operator== (ChunkCoord other) {
         return x == other.x && y == other.y && z == other.z;
     }
+
+    ChunkCoord ChunkCoord::operator+(world::ChunkCoord other)
+    {
+        return ChunkCoord {this->x + other.x, this->y + other.y, this->z + other.z};
+    }
+
+    float ChunkCoord::squaredDst(world::ChunkCoord other)
+    {
+        float dX = x - other.x;
+        float dY = y - other.y;
+        float dZ = z - other.z;
+
+        return dX * dX + dY * dY + dZ * dZ;
+    }
+
+    int ChunkCoord::maxDst(world::ChunkCoord other)
+    {
+        int dX = x - other.x;
+        int dY = y - other.y;
+        int dZ = z - other.z;
+        if (dX < 0) dX *= -1;
+        if (dY < 0) dY *= -1;
+        if (dZ < 0) dZ *= -1;
+
+        if (dX < dY) {
+            if (dZ > dY) return dZ;
+            return dY;
+        }
+        return dX;
+    }
+
+
+
 } // namespace world
 
 namespace std {

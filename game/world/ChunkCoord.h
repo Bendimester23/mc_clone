@@ -13,6 +13,12 @@ namespace world
         int z;
 
         bool operator==(ChunkCoord other);
+
+        ChunkCoord operator+(ChunkCoord other);
+
+        float squaredDst(ChunkCoord other);
+
+        int maxDst(ChunkCoord other);
     };
 } // namespace world
 

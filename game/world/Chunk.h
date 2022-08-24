@@ -8,6 +8,7 @@
 #include <vector>
 #include "../../config.h"
 #include "./ChunkCoord.h"
+#include "../block/content.h"
 
 namespace world
 {
@@ -20,6 +21,7 @@ namespace world
         //std::mutex m_Mutex;
         bool m_Uploaded;
         size_t m_IndicesCount;
+        bool m_Hidden;
 
     public:
 
@@ -34,7 +36,7 @@ namespace world
         
         void Init();
 
-        char GetBlockAt(char x, char y, char z);
+        block::Block GetBlockAt(char x, char y, char z);
 
         void SetBlockAt(char x, char y, char z, char block);
 
@@ -57,6 +59,8 @@ namespace world
         void Unlock();
 
         void Render();
+
+        void Hide();
     };
 } // namespace world
 

@@ -24,6 +24,7 @@ class Game {
     renderer::Skybox m_Skybox;
     bool m_Wireframe;
     std::thread m_ChunkWorkerThread;
+    std::thread m_GenerateWorkerThread;
     bool m_Running;
 
     Game();
@@ -44,6 +45,8 @@ public:
     static Game* GetInstance();
 
     static void ChunkWorkerStart();
+
+    static void GenerateWorkerStart();
 
     static void ProcessInput(GLFWwindow* window, int key, int scancode, int action, int mods);
 };

@@ -47,6 +47,12 @@ glm::mat4 Camera::GetProjectionMatrix() {
     return this->m_ProjectionMatrix * this->m_LookMatrix;
 }
 
+glm::vec3 Camera::GetPosition()
+{
+    return this->m_Position;
+}
+
+
 void Camera::Update(float delta) {
     double xpos, ypos;
     glfwGetCursorPos(this->m_Window, &xpos, &ypos);

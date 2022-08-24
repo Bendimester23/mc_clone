@@ -1,0 +1,41 @@
+[Buildset]
+BuildItems=@Variant(\x00\x00\x00\t\x00\x00\x00\x00\x01\x00\x00\x00\x0b\x00\x00\x00\x00\x01\x00\x00\x00\x14\x00m\x00c\x00-\x00c\x00l\x00o\x00n\x00e\x00-\x002)
+
+[CMake]
+Build Directory Count=1
+Current Build Directory Index-Host System=0
+
+[CMake][CMake Build Directory 0]
+Build Directory Path=/home/bendi/CLionProjects/mc-clone-2/build
+Build Type=Debug
+CMake Binary=/usr/bin/cmake
+CMake Executable=/usr/bin/cmake
+Environment Profile=
+Extra Arguments=
+Install Directory=/usr/local
+Runtime=Host System
+
+[Launch]
+Launch Configurations=Launch Configuration 0
+
+[Launch][Launch Configuration 0]
+Configured Launch Modes=execute
+Configured Launchers=nativeAppLauncher
+Name=mc_clone_2
+Type=Native Application
+
+[Launch][Launch Configuration 0][Data]
+Arguments=
+Dependencies=@Variant(\x00\x00\x00\t\x00\x00\x00\x00\x01\x00\x00\x00\x0b\x00\x00\x00\x00\x02\x00\x00\x00\x14\x00m\x00c\x00-\x00c\x00l\x00o\x00n\x00e\x00-\x002\x00\x00\x00\x14\x00m\x00c\x00_\x00c\x00l\x00o\x00n\x00e\x00_\x002)
+Dependency Action=Build
+EnvironmentGroup=
+Executable=file:///home/bendi/CLionProjects/mc-clone-2
+External Terminal=konsole --noclose --workdir %workdir -e %exe
+Kill Before Executing Again=4194304
+Project Target=mc-clone-2,mc_clone_2
+Use External Terminal=false
+Working Directory=file:///home/bendi/CLionProjects/mc-clone-2
+isExecutable=false
+
+[Project]
+VersionControlSupport=kdevgit

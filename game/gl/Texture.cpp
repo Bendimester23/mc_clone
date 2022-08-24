@@ -24,6 +24,8 @@ namespace gl {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 
         stbi_image_free(img);
+
+        spdlog::info("Loaded texture \"{}\"", name);
     }
 
     void Texture::Bind() {

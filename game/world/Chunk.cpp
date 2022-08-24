@@ -19,11 +19,11 @@ namespace world
         // this->m_Mutex.unlock();
     }
 
-    char Chunk::GetBlockAt(char x, char y, char z)
+    block::Block Chunk::GetBlockAt(char x, char y, char z)
     {
         // this->m_Mutex.lock();
-        if (x < 0 || x > 15 || y < 0 || y > 15 || z < 0 || z > 15) return 0;
-        return m_Blocks[x + (y * 16) + (z * 256)];
+        if (x < 0 || x > 15 || y < 0 || y > 15 || z < 0 || z > 15) return block::byId(0);
+        return block::byId(m_Blocks[x + (y * 16) + (z * 256)]);
         // this->m_Mutex.unlock();
     }
 
@@ -76,7 +76,8 @@ namespace world
             glGenVertexArrays(1, &this->VAO);
 
             glGenBuffers(1, &this->VBO);
-            glGenBuffers(1, &indexVBO);
+
+            glGenBuffers(1, &this->indexVBO);
             this->m_Uploaded = true;
         }
         glBindVertexArray(VAO);
@@ -85,11 +86,11 @@ namespace world
 
         glBindVertexArray(VAO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexVBO);
-        
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, 
-            this->m_Indices.size() * 4, 
-            this->m_Indices.data(), 
-            GL_DYNAMIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->m_Indices.size() * sizeof(unsigned short), this->m_Indices.data(), GL_DYNAMIC_DRAW);
+
+        glVertexAttribIPointer(0, 1, GL_UNSIGNED_INT, sizeof(unsigned int), nullptr);
+        glEnableVertexAttribArray(0);
+
         this->m_IndicesCount = this->m_Indices.size();
     }
 
@@ -99,6 +100,7 @@ namespace world
 
     void Chunk::Render() {
         if (!this->m_Uploaded) return;
+        if (this->m_Hidden) return;
         glBindVertexArray(VAO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexVBO);
 
@@ -107,7 +109,11 @@ namespace world
                     (int)m_IndicesCount,
                     GL_UNSIGNED_SHORT,
                     nullptr);
-
-        glBindVertexArray(0);
     }
+
+    void world::Chunk::Hide()
+    {
+        this->m_Hidden = true;
+    }
+
 } // namespace world

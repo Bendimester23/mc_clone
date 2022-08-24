@@ -12,7 +12,7 @@ Game *Game::GetInstance() {
 Game::Game()
         : m_Window(1280, 720, "Minecraft Clone 2 | Loading..."), shader("test"),
           m_Camera(70, 1280.0f / 720.0f, 0.01f, 2000.0f, 15, 10, m_Window.GetHandle()), m_TestTexture("test"),
-          m_WorldRenderer(), m_ChunkWorkerThread(Game::ChunkWorkerStart), m_Running(true), m_Skybox(1000.0f) {
+          m_WorldRenderer(), m_Skybox(1000.0f), m_ChunkWorkerThread(Game::ChunkWorkerStart), m_GenerateWorkerThread(Game::GenerateWorkerStart), m_Running(true) {
     glfwSetKeyCallback(m_Window.GetHandle(), Game::ProcessInput);
     glfwSetInputMode(this->m_Window.GetHandle(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 }
@@ -112,17 +112,28 @@ void Game::Run() {
     this->m_Running = false;
 
     this->m_ChunkWorkerThread.join();
+    this->m_GenerateWorkerThread.join();
 
     m_Window.Dispose();
 }
 
 void Game::ChunkWorkerStart() {
     //Don't start too early
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+    std::this_thread::sleep_for(std::chrono::seconds(1));
 
     //I know it looks bad, but it does work
     auto inst = Game::GetInstance();
     inst->m_WorldRenderer.GetWorld()->ChunkBuildWorker(&inst->m_Running);
+}
+
+void Game::GenerateWorkerStart()
+{
+    //Don't start too early
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+
+    //I know it looks bad, but it does work
+    auto inst = Game::GetInstance();
+    inst->m_WorldRenderer.GetWorld()->ChunkGenerateWorker(&inst->m_Running);
 }
 
 void Game::ProcessInput(GLFWwindow *window, int key, int scancode, int action, int mods) {
@@ -131,12 +142,14 @@ void Game::ProcessInput(GLFWwindow *window, int key, int scancode, int action, i
         Game::GetInstance()->Quit();
     } else if (key == GLFW_KEY_F1) {
         Game::GetInstance()->ToggleWireframeMode();
+    } else if (key == GLFW_KEY_F2) {
+        Game::GetInstance()->m_WorldRenderer.GetWorld()->RebuildAll();
     }
 }
 
 void Game::Update(double delta) {
     this->m_Camera.Update((float) delta);
-    this->m_WorldRenderer.Update(delta);
+    this->m_WorldRenderer.Update(delta, this->m_Camera.GetPosition() / 16.0f);
 }
 
 void Game::Quit() {

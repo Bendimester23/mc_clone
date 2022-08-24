@@ -5,34 +5,32 @@
 #ifndef MC_CLONE_2_WORLDRENDERER_H
 #define MC_CLONE_2_WORLDRENDERER_H
 
+#include <cmath>
 #include <glad/glad.h>
 #include "../gl/Texture.h"
 #include "../gl/ShaderProgram.h"
 #include "../mesh/ChunkMeshBuilder.h"
 #include <glm/glm.hpp>
+#include <spdlog/spdlog.h>
 #include "../world/Chunk.h"
 #include "../world/World.h"
 
 namespace renderer {
 
     class WorldRenderer {
-        GLuint VAO{};
-        GLuint VBO{};
-        GLuint indexVBO{};
         gl::Texture m_AtlasTexture;
         gl::ShaderProgram m_ChunkShader;
-        size_t m_IndicesCount;
-        mesh::ChunkMeshBuilder b;
         world::World m_World;
+        glm::vec3 m_PrevPos;
+        int maxDst = 5;
+        int m_Frame;
 
     public:
         WorldRenderer();
 
         void Render(double delta, glm::mat4 matrix, bool wireframe);
 
-        void Update(double delta);
-
-        void AddBlock(char x, char y, char z);
+        void Update(double delta, glm::vec3 pos);
 
         world::World* GetWorld();
     };
