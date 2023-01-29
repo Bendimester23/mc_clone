@@ -3,10 +3,10 @@
 //
 
 #include "WorldRenderer.h"
+#include <algorithm>
 
 namespace renderer
 {
-
     //+z north
     //-z south
     //+x east
@@ -16,8 +16,8 @@ namespace renderer
     {
         this->m_ChunkShader.Reload();
 
-        for (int x = 0; x < 10; x++) {
-            for (int z = 0; z < 10; z++) {
+        for (int x = 0; x < 15; x++) {
+            for (int z = 0; z < 15; z++) {
                 for (int y = 0; y < 4; y++) {
                     this->m_World.GenerateChunk(world::ChunkCoord { .x = x, .y = y, .z = z });
                 }
@@ -28,19 +28,36 @@ namespace renderer
     void WorldRenderer::Update(double delta, glm::vec3 p)
     {
         this->m_World.Update(delta);
-        this->m_Frame+=1;
 
-        p.x = (int)p.x;
-        p.y = (int)p.y;
-        p.z = (int)p.z;
+        p.x = std::round(p.x);
+        p.y = std::round(p.y);
+        p.z = std::round(p.z);
 
-        if (this->m_Frame >= 20 && this->m_World.GetChunk(world::ChunkCoord {(int)p.x, 0, (int)p.z}) == nullptr) {
-            for (int y = -5; y < 5; y++) {
-                this->m_World.GenerateChunk(world::ChunkCoord {(int)p.x, y, (int)p.z});
-            }
-            this->m_Frame = 0;
-        }
+        this->m_World->m_CurrPos = world::ChunkCoord {static_cast<int>(p.x), static_cast<int>(p.y), static_cast<int>(p.z)};
+
         if (p != this->m_PrevPos) {
+            char viewDst = 5;
+            std::vector<world::ChunkCoord> toGenerate;
+            world::ChunkCoord curr{static_cast<int>(p.x), static_cast<int>(p.y), static_cast<int>(p.z)};
+
+            for (int x = -viewDst; x < viewDst; ++x) {
+                for (int y = -viewDst; y < viewDst; ++y) {
+                    for (int z = -viewDst; z < viewDst; ++z) {
+                        if (m_World.GetChunk(curr + world::ChunkCoord { x, y, z}) == nullptr) {
+                            toGenerate.emplace_back(world::ChunkCoord { x, y, z});
+                        }
+                    }
+                }
+            }
+
+            std::sort(toGenerate.begin(), toGenerate.end(), [](auto a, auto b) {
+               return a.dstFromOrigin() < b.dstFromOrigin();
+            });
+
+            for (auto &item: toGenerate) {
+                this->m_World.GenerateChunk(item + curr);
+            }
+
             auto pos = world::ChunkCoord {(int)p.x, (int)p.y, (int)p.z};
             auto chs = this->m_World.GetChunks();
             for (int i = 0; i < chs.size(); i++) {

@@ -100,7 +100,7 @@ namespace world
 
     void Chunk::Render() {
         if (!this->m_Uploaded) return;
-        if (this->m_Hidden) return;
+        //if (this->m_Hidden) return;
         glBindVertexArray(VAO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexVBO);
 

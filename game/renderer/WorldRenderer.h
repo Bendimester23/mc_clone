@@ -21,9 +21,9 @@ namespace renderer {
         gl::Texture m_AtlasTexture;
         gl::ShaderProgram m_ChunkShader;
         world::World m_World;
-        glm::vec3 m_PrevPos;
+        glm::vec3 m_PrevPos{};
         int maxDst = 5;
-        int m_Frame;
+        int m_Frame{};
 
     public:
         WorldRenderer();

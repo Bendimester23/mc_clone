@@ -23,6 +23,8 @@ namespace world
         std::thread m_ChunkBuildThread;
 
     public:
+        ChunkCoord m_CurrPos{0, 0, 0};
+
         void Clear();
 
         void ChunkBuildWorker(bool* running);
@@ -36,6 +38,8 @@ namespace world
         void RebuildAll();
 
         void GenerateChunk(ChunkCoord pos);
+
+        void QueueBuildJob(ChunkCoord pos);
 
         std::deque<Chunk> GetChunks();
 

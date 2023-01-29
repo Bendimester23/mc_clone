@@ -60,11 +60,18 @@ namespace world
         return nullptr;
     }
 
+    void World::QueueBuildJob(ChunkCoord pos) {
+        for (const auto &item: this->m_BuildQueue) {
+            if (pos == item->GetPosition()) return;
+        }
+        this->m_BuildQueue.emplace_back(this->GetChunk(pos));
+    }
+
     void World::ChunkGenerateWorker(bool *running)
     {
         while (*running)
         {
-            while (this->m_GenerateQueue.size() == 0 && *running)
+            while (this->m_GenerateQueue.empty() && *running)
             {
                 std::this_thread::sleep_for(std::chrono::milliseconds(10));
             }
@@ -89,13 +96,13 @@ namespace world
             }
 
             this->m_Chunks.push_back(ch);
-            this->m_BuildQueue.push_back(&this->m_Chunks.back());
-            this->m_BuildQueue.push_back(this->GetChunk(pos + ChunkCoord {1, 0, 0}));
-            this->m_BuildQueue.push_back(this->GetChunk(pos + ChunkCoord {-1, 0, 0}));
-            this->m_BuildQueue.push_back(this->GetChunk(pos + ChunkCoord {0, 1, 0}));
-            this->m_BuildQueue.push_back(this->GetChunk(pos + ChunkCoord {0, -1, 0}));
-            this->m_BuildQueue.push_back(this->GetChunk(pos + ChunkCoord {0, 0, 1}));
-            this->m_BuildQueue.push_back(this->GetChunk(pos + ChunkCoord {0, 0, -1}));
+            this->QueueBuildJob(this->m_Chunks.back().GetPosition());
+            this->QueueBuildJob(pos + ChunkCoord{1, 0, 0});
+            this->QueueBuildJob(pos + ChunkCoord{-1, 0, 0});
+            this->QueueBuildJob(pos + ChunkCoord{0, 1, 0});
+            this->QueueBuildJob(pos + ChunkCoord{0, -1, 0});
+            this->QueueBuildJob(pos + ChunkCoord{0, 0, 1});
+            this->QueueBuildJob(pos + ChunkCoord{0, 0, -1});
             this->m_GenerateQueue.pop_front();
         }
     }

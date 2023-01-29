@@ -11,13 +11,17 @@ namespace world
         return ChunkCoord {this->x + other.x, this->y + other.y, this->z + other.z};
     }
 
-    float ChunkCoord::squaredDst(world::ChunkCoord other)
+    float ChunkCoord::squaredDst(world::ChunkCoord other) const
     {
         float dX = x - other.x;
         float dY = y - other.y;
         float dZ = z - other.z;
 
         return dX * dX + dY * dY + dZ * dZ;
+    }
+
+    float ChunkCoord::dstFromOrigin() const {
+        return x*x + y*y + z*z;
     }
 
     int ChunkCoord::maxDst(world::ChunkCoord other)

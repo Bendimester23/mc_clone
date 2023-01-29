@@ -16,7 +16,9 @@ namespace world
 
         ChunkCoord operator+(ChunkCoord other);
 
-        float squaredDst(ChunkCoord other);
+        float squaredDst(ChunkCoord other) const;
+
+        float dstFromOrigin() const;
 
         int maxDst(ChunkCoord other);
     };
