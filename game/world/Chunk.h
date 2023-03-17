@@ -14,7 +14,7 @@ namespace world
 {
     class Chunk
     {
-        ChunkCoord m_Pos;
+        ChunkCoord m_Pos = {0, 0, 0};
         std::array<char, CHUNK_VOLUME> m_Blocks;
         bool m_Dirty;
         bool m_NeedsUpload;
@@ -32,9 +32,7 @@ namespace world
         std::vector<unsigned int> m_Vertices;
         std::vector<unsigned short> m_Indices;
 
-        Chunk(ChunkCoord pos) noexcept;
-        
-        void Init();
+        explicit Chunk(ChunkCoord pos = ChunkCoord {0, 0, 0}) noexcept;
 
         block::Block GetBlockAt(char x, char y, char z);
 

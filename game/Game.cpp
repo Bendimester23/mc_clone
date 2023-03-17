@@ -69,7 +69,7 @@ void Game::Run() {
 
         double fps = 1.0 / ((delta + lastDelta) / 2.0);
 
-        m_Window.SetTitle(fmt::format("Minecraft Clone 2 | FPS: {0:.2f} FrameTime: {1:.4f}", fps, delta));
+        m_Window.SetTitle(fmt::format("Minecraft Clone 2 | FPS: {0:.2f} GenerateQueue: {1} BuildQueue: {2} Uploads: {3}", fps, m_WorldRenderer.GetWorld()->GenerateQueueLength(), m_WorldRenderer.GetWorld()->BuildQueueLength(), m_WorldRenderer.GetWorld()->chunkUploads));
         if (now - lastTime >= 1.0) {
             spdlog::info("FPS: {0:.2f} FrameTime: {1:.4f}", fps, delta);
             lastTime = now;
@@ -122,6 +122,7 @@ void Game::ChunkWorkerStart() {
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
     //I know it looks bad, but it does work
+    //Update: It does not work
     auto inst = Game::GetInstance();
     inst->m_WorldRenderer.GetWorld()->ChunkBuildWorker(&inst->m_Running);
 }
@@ -132,6 +133,7 @@ void Game::GenerateWorkerStart()
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
     //I know it looks bad, but it does work
+    //Update: It does not work
     auto inst = Game::GetInstance();
     inst->m_WorldRenderer.GetWorld()->ChunkGenerateWorker(&inst->m_Running);
 }

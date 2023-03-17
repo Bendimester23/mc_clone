@@ -1,17 +1,17 @@
 #build for linux
 echo "Building for Linux 🐧"
-cd ./cmake-build-minsizerel/
+cd ./cmake-build-release/
 make
 cd ../
 rm -r ./dist/linux
 mkdir ./dist/linux
-cp ./cmake-build-minsizerel/mc_clone_2 ./dist/linux/
+cp ./cmake-build-release/mc_clone_2 ./dist/linux/
 cp -r ./assets ./dist/linux/
 
 # build for w*ndows
 echo "Building for W*ndows 🪟"
 cd ./cmake-build-windows/
-ninja
+make
 cd ..
 rm -r ./dist/windows
 mkdir ./dist/windows
