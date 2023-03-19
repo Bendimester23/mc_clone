@@ -12,7 +12,8 @@ Game *Game::GetInstance() {
 Game::Game()
         : m_Window(1280, 720, "Minecraft Clone 2 | Loading..."), shader("test"),
           m_Camera(70, 1280.0f / 720.0f, 0.01f, 2000.0f, 15, 10, m_Window.GetHandle()), m_TestTexture("test"),
-          m_WorldRenderer(), m_Skybox(1000.0f), m_ChunkWorkerThread(Game::ChunkWorkerStart), m_GenerateWorkerThread(Game::GenerateWorkerStart), m_Running(true) {
+          m_WorldRenderer(), m_Skybox(1000.0f), m_ChunkWorkerThread(Game::ChunkWorkerStart),
+          m_GenerateWorkerThread(Game::GenerateWorkerStart), m_Running(true) {
     glfwSetKeyCallback(m_Window.GetHandle(), Game::ProcessInput);
     glfwSetInputMode(this->m_Window.GetHandle(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 }
@@ -29,10 +30,10 @@ void Game::Run() {
 
     //never gonna give you up
     float vertices[]{
-               0.0f,    0.0f, -10.0f, 0.0f, 1.0f,
-             100.0f,    0.0f, -10.0f, 1.0f, 1.0f,
-             100.0f,  100.0f, -10.0f, 1.0f, 0.0f,
-               0.0f,  100.0f, -10.0f, 0.0f, 0.0f,
+            0.0f, 0.0f, -10.0f, 0.0f, 1.0f,
+            100.0f, 0.0f, -10.0f, 1.0f, 1.0f,
+            100.0f, 100.0f, -10.0f, 1.0f, 0.0f,
+            0.0f, 100.0f, -10.0f, 0.0f, 0.0f,
     };
 
     unsigned short indicies[]{
@@ -69,7 +70,10 @@ void Game::Run() {
 
         double fps = 1.0 / ((delta + lastDelta) / 2.0);
 
-        m_Window.SetTitle(fmt::format("Minecraft Clone 2 | FPS: {0:.2f} GenerateQueue: {1} BuildQueue: {2} Uploads: {3}", fps, m_WorldRenderer.GetWorld()->GenerateQueueLength(), m_WorldRenderer.GetWorld()->BuildQueueLength(), m_WorldRenderer.GetWorld()->chunkUploads));
+        m_Window.SetTitle(
+                fmt::format("Minecraft Clone 2 | FPS: {0:.2f} GenerateQueue: {1} BuildQueue: {2} Uploads: {3} Chunks: {4}", fps,
+                            m_WorldRenderer.GetWorld()->GenerateQueueLength(),
+                            m_WorldRenderer.GetWorld()->BuildQueueLength(), m_WorldRenderer.GetWorld()->chunkUploads, m_WorldRenderer.GetWorld()->m_Chunks.size()));
         if (now - lastTime >= 1.0) {
             spdlog::info("FPS: {0:.2f} FrameTime: {1:.4f}", fps, delta);
             lastTime = now;
@@ -102,9 +106,11 @@ void Game::Run() {
         shader.UnBind();
         m_TestTexture.UnBind();
 
-        this->m_Skybox.Render(this->m_Camera.GetProjectionMatrix());
         glEnable(GL_CULL_FACE);
         this->m_WorldRenderer.Render(delta, this->m_Camera.GetMatrix(), this->m_Wireframe);
+        glDisable(GL_CULL_FACE);
+        //TODO fix skybox vertices and enable GL_CULL_FACE
+        this->m_Skybox.Render(this->m_Camera.GetProjectionMatrix());
 
         m_Window.SwapBuffers();
     }
@@ -127,8 +133,7 @@ void Game::ChunkWorkerStart() {
     inst->m_WorldRenderer.GetWorld()->ChunkBuildWorker(&inst->m_Running);
 }
 
-void Game::GenerateWorkerStart()
-{
+void Game::GenerateWorkerStart() {
     //Don't start too early
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
@@ -151,7 +156,7 @@ void Game::ProcessInput(GLFWwindow *window, int key, int scancode, int action, i
 
 void Game::Update(double delta) {
     this->m_Camera.Update((float) delta);
-    this->m_WorldRenderer.Update(delta, this->m_Camera.GetPosition() / 16.0f);
+    this->m_WorldRenderer.Update(delta, this->m_Camera.GetPosition());
 }
 
 void Game::Quit() {

@@ -4,7 +4,8 @@
 
 #include "Camera.h"
 
-Camera::Camera(float fovy, float aspect, float near, float far, float mouse_sensitivity, float movement_speed, GLFWwindow* window) {
+Camera::Camera(float fovy, float aspect, float near, float far, float mouse_sensitivity, float movement_speed,
+               GLFWwindow *window) {
 
     this->m_Position = glm::vec3(0.0f, 0.0f, 3.0f);
     this->m_Forward = glm::vec3(0.0f, 0.0f, 1.0f);
@@ -33,9 +34,9 @@ Camera::Camera(float fovy, float aspect, float near, float far, float mouse_sens
     );
 
     this->m_ViewMatrix = glm::lookAt(
-        glm::vec3(),
-        m_Forward,
-        m_Up
+            glm::vec3(),
+            m_Forward,
+            m_Up
     );
 }
 
@@ -47,8 +48,7 @@ glm::mat4 Camera::GetProjectionMatrix() {
     return this->m_ProjectionMatrix * this->m_LookMatrix;
 }
 
-glm::vec3 Camera::GetPosition()
-{
+glm::vec3 Camera::GetPosition() {
     return this->m_Position;
 }
 
@@ -57,10 +57,10 @@ void Camera::Update(float delta) {
     double xpos, ypos;
     glfwGetCursorPos(this->m_Window, &xpos, &ypos);
 
-    this->m_HorizontalAngle -= ((float)xpos - WINDOW_WIDTH/2.0f) * delta * this->m_Mouse_sensitivity;
+    this->m_HorizontalAngle -= ((float) xpos - WINDOW_WIDTH / 2.0f) * delta * this->m_Mouse_sensitivity;
     if (this->m_HorizontalAngle > 360) this->m_HorizontalAngle -= 360;
     if (this->m_HorizontalAngle < 0) this->m_HorizontalAngle += 360;
-    this->m_VerticalAngle -= ((float)ypos - WINDOW_HEIGHT/2.0f) * delta * this->m_Mouse_sensitivity;
+    this->m_VerticalAngle -= ((float) ypos - WINDOW_HEIGHT / 2.0f) * delta * this->m_Mouse_sensitivity;
     this->m_VerticalAngle = glm::clamp(this->m_VerticalAngle, -90.0f, 90.0f);
 
     glfwSetCursorPos(this->m_Window, 640, 360);
@@ -76,43 +76,43 @@ void Camera::Update(float delta) {
 
 
     this->m_Right = glm::vec3(
-            std::sin(angleV - 3.14f/2.0f),
+            std::sin(angleV - 3.14f / 2.0f),
             0,
-            std::cos(angleV - 3.14f/2.0f)
+            std::cos(angleV - 3.14f / 2.0f)
     );
 
-    this->m_Up = glm::cross( this->m_Right, this->m_Forward );
+    this->m_Up = glm::cross(this->m_Right, this->m_Forward);
 
     if (glfwGetKey(this->m_Window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
         //Fast boi
         delta *= 5;
     }
 
-    if (glfwGetKey(this->m_Window, GLFW_KEY_W ) == GLFW_PRESS){
+    if (glfwGetKey(this->m_Window, GLFW_KEY_W) == GLFW_PRESS) {
         this->m_Position += this->m_Forward * delta * this->m_Movement_speed;
     }
 
-    if (glfwGetKey(this->m_Window, GLFW_KEY_S ) == GLFW_PRESS){
+    if (glfwGetKey(this->m_Window, GLFW_KEY_S) == GLFW_PRESS) {
         this->m_Position -= this->m_Forward * delta * this->m_Movement_speed;
     }
 
-    if (glfwGetKey(this->m_Window, GLFW_KEY_D ) == GLFW_PRESS){
+    if (glfwGetKey(this->m_Window, GLFW_KEY_D) == GLFW_PRESS) {
         this->m_Position += this->m_Right * delta * this->m_Movement_speed;
     }
 
-    if (glfwGetKey(this->m_Window, GLFW_KEY_A ) == GLFW_PRESS){
+    if (glfwGetKey(this->m_Window, GLFW_KEY_A) == GLFW_PRESS) {
         this->m_Position -= this->m_Right * delta * this->m_Movement_speed;
     }
 
     this->m_ViewMatrix = glm::lookAt(
             this->m_Position,
-            this->m_Position+this->m_Forward,
+            this->m_Position + this->m_Forward,
             this->m_Up
     );
 
     this->m_LookMatrix = glm::lookAt(
-        glm::vec3(),
-        m_Forward,
-        m_Up
+            glm::vec3(),
+            m_Forward,
+            m_Up
     );
 }

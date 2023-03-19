@@ -5,10 +5,11 @@
 #include "Texture.h"
 
 namespace gl {
-    Texture::Texture(const std::string &name): m_Id(0), m_Bound(false), m_Name(name) {
+    Texture::Texture(const std::string &name) : m_Id(0), m_Bound(false), m_Name(name) {
         int width, height, channels;
-        unsigned char *img = stbi_load(fmt::format("{}{}.png", TEXTURE_LOC, name).c_str(), &width, &height, &channels, 0);
-        if(img == nullptr) {
+        unsigned char *img = stbi_load(fmt::format("{}{}.png", TEXTURE_LOC, name).c_str(), &width, &height, &channels,
+                                       0);
+        if (img == nullptr) {
             spdlog::error("Error loading texture \"{}\"!", name);
             exit(1);
         }

@@ -30,6 +30,7 @@ class Game {
     Game();
 
     ~Game() = default;
+
 public:
 
     void Run();
@@ -42,13 +43,13 @@ public:
 
     bool IsRunning();
 
-    static Game* GetInstance();
+    static Game *GetInstance();
 
     static void ChunkWorkerStart();
 
     static void GenerateWorkerStart();
 
-    static void ProcessInput(GLFWwindow* window, int key, int scancode, int action, int mods);
+    static void ProcessInput(GLFWwindow *window, int key, int scancode, int action, int mods);
 };
 
 

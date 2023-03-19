@@ -41,12 +41,12 @@ Window::Window(int width, int height, const std::string &title) {
 
     //Set da icon
     GLFWimage images[1];
-    images[0].pixels = stbi_load(fmt::format("{}icon.png", TEXTURE_LOC).c_str(), &images[0].width, &images[0].height, 0, 4);
+    images[0].pixels = stbi_load(fmt::format("{}icon.png", TEXTURE_LOC).c_str(), &images[0].width, &images[0].height, 0,
+                                 4);
     glfwSetWindowIcon(m_Window, 1, images);
     stbi_image_free(images[0].pixels);
 
-
-    glfwMaximizeWindow(m_Window);
+//    glfwMaximizeWindow(m_Window);
 
     glClearColor(.3f, .3f, .4f, 1.0f);
     glViewport(0, 0, 1280, 720);
@@ -64,8 +64,7 @@ void Window::PollEvents() {
     glfwPollEvents();
 }
 
-void Window::Clear()
-{
+void Window::Clear() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     int width, height;

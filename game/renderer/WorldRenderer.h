@@ -21,7 +21,7 @@ namespace renderer {
         gl::Texture m_AtlasTexture;
         gl::ShaderProgram m_ChunkShader;
         world::World m_World;
-        glm::vec3 m_PrevPos{};
+        world::ChunkCoord m_PrevPos;
         int maxDst = 5;
         int m_Frame{};
 
@@ -32,7 +32,7 @@ namespace renderer {
 
         void Update(double delta, glm::vec3 pos);
 
-        world::World* GetWorld();
+        world::World *GetWorld();
     };
 
 } // renderer

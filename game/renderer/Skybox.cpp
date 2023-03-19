@@ -1,69 +1,68 @@
 #include "./Skybox.h"
 
-namespace renderer
-{
-    Skybox::Skybox(float size): m_SkyboxTexture("skybox"), m_SkyboxShader("skybox") {
+namespace renderer {
+    Skybox::Skybox(float size) : m_SkyboxTexture("skybox"), m_SkyboxShader("skybox") {
         this->m_SkyboxShader.Reload();
 
         float neg = -size;
         float pos = size;
 
-        float vertices[] {
-            neg, neg, neg, 0.0f, 0.5f, //-Z 
-            neg, pos, neg, 0.0f, 0.0f, //-Z
-            pos, pos, neg, 0.5f, 0.0f, //-Z
-            pos, neg, neg, 0.5f, 0.5f, //-Z
+        float vertices[]{
+                neg, neg, neg, 0.0f, 0.5f, //-Z
+                neg, pos, neg, 0.0f, 0.0f, //-Z
+                pos, pos, neg, 0.5f, 0.0f, //-Z
+                pos, neg, neg, 0.5f, 0.5f, //-Z
 
-            neg, neg, pos, 0.0f, 0.5f, //+Z 
-            neg, pos, pos, 0.0f, 0.0f, //+Z
-            pos, pos, pos, 0.5f, 0.0f, //+Z
-            pos, neg, pos, 0.5f, 0.5f, //+Z
+                neg, neg, pos, 0.0f, 0.5f, //+Z
+                neg, pos, pos, 0.0f, 0.0f, //+Z
+                pos, pos, pos, 0.5f, 0.0f, //+Z
+                pos, neg, pos, 0.5f, 0.5f, //+Z
 
-            neg, neg, neg, 0.0f, 0.5f, //Bottom
-            neg, neg, pos, 0.0f, 1.0f, //Bottom
-            pos, neg, pos, 0.5f, 1.0f, //Bottom
-            pos, neg, neg, 0.5f, 0.5f, //Bottom
+                neg, neg, neg, 0.0f, 0.5f, //Bottom
+                neg, neg, pos, 0.0f, 1.0f, //Bottom
+                pos, neg, pos, 0.5f, 1.0f, //Bottom
+                pos, neg, neg, 0.5f, 0.5f, //Bottom
 
-            neg, pos, neg, 0.5f, 0.0f, //Top
-            neg, pos, pos, 0.5f, 0.5f, //Top
-            pos, pos, pos, 1.0f, 0.5f, //Top
-            pos, pos, neg, 1.0f, 0.0f, //Top
+                neg, pos, neg, 0.5f, 0.0f, //Top
+                neg, pos, pos, 0.5f, 0.5f, //Top
+                pos, pos, pos, 1.0f, 0.5f, //Top
+                pos, pos, neg, 1.0f, 0.0f, //Top
 
-            pos, neg, neg, 0.0f, 0.5f, //+X
-            pos, pos, neg, 0.0f, 0.0f, //+X
-            pos, pos, pos, 0.5f, 0.0f, //+X
-            pos, neg, pos, 0.5f, 0.5f, //+X
+                pos, neg, neg, 0.0f, 0.5f, //+X
+                pos, pos, neg, 0.0f, 0.0f, //+X
+                pos, pos, pos, 0.5f, 0.0f, //+X
+                pos, neg, pos, 0.5f, 0.5f, //+X
 
-            neg, neg, neg, 0.0f, 0.5f, //-X
-            neg, pos, neg, 0.0f, 0.0f, //-X
-            neg, pos, pos, 0.5f, 0.0f, //-X
-            neg, neg, pos, 0.5f, 0.5f, //-X
+                neg, neg, neg, 0.0f, 0.5f, //-X
+                neg, pos, neg, 0.0f, 0.0f, //-X
+                neg, pos, pos, 0.5f, 0.0f, //-X
+                neg, neg, pos, 0.5f, 0.5f, //-X
         };
 
-        unsigned short indices[] {
-            //-z
-            0, 1, 2,
-            0, 2, 3,
+        unsigned short indices[]{
+                //-z
+                0, 1, 2,
+                0, 2, 3,
 
-            //+z
-            4, 5, 6,
-            4, 6, 7,
+                //+z
+                4, 5, 6,
+                4, 6, 7,
 
-            //bottom
-            8, 9, 10,
-            8, 10, 11,
+                //bottom
+                8, 9, 10,
+                8, 10, 11,
 
-            //top 
-            12, 13, 14,
-            12, 14, 15,
+                //top
+                12, 13, 14,
+                12, 14, 15,
 
-            //+x
-            16, 17, 18,
-            16, 18, 19,
+                //+x
+                16, 17, 18,
+                16, 18, 19,
 
-            //-x
-            20, 21, 22,
-            20, 22, 23,
+                //-x
+                20, 21, 22,
+                20, 22, 23,
         };
 
         this->m_IndexCount = sizeof(indices) / 2;

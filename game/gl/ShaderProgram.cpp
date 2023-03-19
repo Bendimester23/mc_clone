@@ -13,7 +13,8 @@ namespace gl {
             return;
         }
         if (this->m_Bound) {
-            spdlog::warn("Tried to bind shader \"{}\" twice, you may have just forgot to unbind it before!", this->m_Name);
+            spdlog::warn("Tried to bind shader \"{}\" twice, you may have just forgot to unbind it before!",
+                         this->m_Name);
             return;
         }
         glUseProgram(m_Id);
@@ -30,13 +31,12 @@ namespace gl {
     }
 
     ShaderProgram::ShaderProgram(std::string name)
-    : m_Id(0), m_Name(std::move(name)), m_Bound(false), m_HasError(false)
-    {
+            : m_Id(0), m_Name(std::move(name)), m_Bound(false), m_HasError(false) {
     }
 
     bool ShaderProgram::Reload() {
-        auto vertex = CreateShader(SHADERS_LOC+m_Name+"/vert.glsl", GL_VERTEX_SHADER);
-        auto fragment = CreateShader(SHADERS_LOC+m_Name+"/frag.glsl", GL_FRAGMENT_SHADER);
+        auto vertex = CreateShader(SHADERS_LOC + m_Name + "/vert.glsl", GL_VERTEX_SHADER);
+        auto fragment = CreateShader(SHADERS_LOC + m_Name + "/frag.glsl", GL_FRAGMENT_SHADER);
 
         this->m_Id = glCreateProgram();
         glAttachShader(this->m_Id, vertex);
@@ -77,8 +77,9 @@ namespace gl {
         return shader;
     }
 
-    GLint ShaderProgram::GetUniformLocation(const std::string& name) {
-        if (this->m_UniformCache.find(name) == this->m_UniformCache.end()) this->m_UniformCache[name] = glGetUniformLocation(this->m_Id, name.c_str());
+    GLint ShaderProgram::GetUniformLocation(const std::string &name) {
+        if (this->m_UniformCache.find(name) == this->m_UniformCache.end())
+            this->m_UniformCache[name] = glGetUniformLocation(this->m_Id, name.c_str());
         return this->m_UniformCache[name];
     }
 
@@ -98,7 +99,7 @@ namespace gl {
         glUniform3f(this->GetUniformLocation(name), value.x, value.y, value.z);
     }
 
-    void ShaderProgram::SetUniformBool(const std::string& name, bool value) {
+    void ShaderProgram::SetUniformBool(const std::string &name, bool value) {
         if (!this->m_Bound) {
             spdlog::warn(R"(Tried to set uniform "{}" on unbound shader "{}"!)", name, this->m_Name);
             return;

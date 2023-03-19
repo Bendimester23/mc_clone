@@ -13,7 +13,7 @@
 #include "../config.h"
 
 class Window {
-    GLFWwindow* m_Window;
+    GLFWwindow *m_Window;
 
 public:
     Window(int width, int height, const std::string &title);

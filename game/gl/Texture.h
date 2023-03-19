@@ -19,7 +19,7 @@ namespace gl {
         std::string m_Name;
 
     public:
-        Texture(const std::string& name);
+        Texture(const std::string &name);
 
         void Bind();
 

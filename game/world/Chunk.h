@@ -10,10 +10,8 @@
 #include "./ChunkCoord.h"
 #include "../block/content.h"
 
-namespace world
-{
-    class Chunk
-    {
+namespace world {
+    class Chunk {
         ChunkCoord m_Pos = {0, 0, 0};
         std::array<char, CHUNK_VOLUME> m_Blocks;
         bool m_Dirty;
@@ -32,7 +30,7 @@ namespace world
         std::vector<unsigned int> m_Vertices;
         std::vector<unsigned short> m_Indices;
 
-        explicit Chunk(ChunkCoord pos = ChunkCoord {0, 0, 0}) noexcept;
+        explicit Chunk(ChunkCoord pos = ChunkCoord{0, 0, 0}) noexcept;
 
         block::Block GetBlockAt(char x, char y, char z);
 
@@ -42,7 +40,7 @@ namespace world
 
         void MarkDone();
 
-        ChunkCoord GetPosition();
+        ChunkCoord GetPosition() const;
 
         /**
          * @brief marks the chunk both not dirty and uploaded

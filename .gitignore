@@ -2,6 +2,6 @@
 /dist/
 /build/
 /cmake-build-debug/
-/cmake-build-minsizerel/
-/cmake-build-windows/
+/cmake-build-release/
+/cmake-build-win/
 /not_a_windows_virus.zip

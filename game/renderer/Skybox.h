@@ -6,8 +6,7 @@
 #include "../gl/Texture.h"
 #include "../gl/ShaderProgram.h"
 
-namespace renderer
-{
+namespace renderer {
     class Skybox {
         gl::Texture m_SkyboxTexture;
         gl::ShaderProgram m_SkyboxShader;

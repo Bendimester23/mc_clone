@@ -3,10 +3,8 @@
 
 #include <functional>
 
-namespace world
-{
-    struct ChunkCoord
-    {
+namespace world {
+    struct ChunkCoord {
     public:
         int x;
         int y;
@@ -16,11 +14,19 @@ namespace world
 
         ChunkCoord operator+(ChunkCoord other);
 
-        float squaredDst(ChunkCoord other) const;
+        int squaredDst(ChunkCoord other) const;
 
-        float dstFromOrigin() const;
+        int dstFromOrigin() const;
 
-        int maxDst(ChunkCoord other);
+        int maxDst(ChunkCoord other) const;
+    };
+
+    struct HeightMapCoord {
+    public:
+        int x;
+        int z;
+
+        bool operator==(HeightMapCoord other) const;
     };
 } // namespace world
 

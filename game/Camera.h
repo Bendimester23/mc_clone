@@ -26,9 +26,10 @@ class Camera {
     float m_Mouse_sensitivity;
     float m_Movement_speed;
 
-    GLFWwindow* m_Window;
+    GLFWwindow *m_Window;
 public:
-    Camera(float fovy, float aspect, float near, float far, float mouse_sensitivity, float movement_speed, GLFWwindow* window);
+    Camera(float fovy, float aspect, float near, float far, float mouse_sensitivity, float movement_speed,
+           GLFWwindow *window);
 
     void Update(float delta);
 

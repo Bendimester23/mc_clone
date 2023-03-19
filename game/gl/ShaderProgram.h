@@ -4,6 +4,7 @@
 
 #ifndef MC_CLONE_2_SHADERPROGRAM_H
 #define MC_CLONE_2_SHADERPROGRAM_H
+
 #include <string>
 #include <glad/glad.h>
 #include <map>
@@ -21,12 +22,12 @@ namespace gl {
         bool m_HasError;
         std::map<std::string, GLint> m_UniformCache;
 
-        GLint GetUniformLocation(const std::string& name);
+        GLint GetUniformLocation(const std::string &name);
 
-        GLuint CreateShader(const std::string& path, GLuint type);
+        GLuint CreateShader(const std::string &path, GLuint type);
 
     public:
-        explicit ShaderProgram(std::string  name);
+        explicit ShaderProgram(std::string name);
 
         void Bind();
 
@@ -34,11 +35,11 @@ namespace gl {
 
         bool Reload();
 
-        void SetUniformMat4(const std::string& name, glm::mat4 value);
+        void SetUniformMat4(const std::string &name, glm::mat4 value);
 
-        void SetUniformVec3(const std::string& name, glm::vec3 value);
+        void SetUniformVec3(const std::string &name, glm::vec3 value);
 
-        void SetUniformBool(const std::string& name, bool value);
+        void SetUniformBool(const std::string &name, bool value);
     };
 
 } // gl

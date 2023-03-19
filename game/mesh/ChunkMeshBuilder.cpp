@@ -5,7 +5,7 @@
 #include "ChunkMeshBuilder.h"
 
 namespace mesh {
-    ChunkMeshBuilder::ChunkMeshBuilder(): m_Indices(), m_Vertices() {
+    ChunkMeshBuilder::ChunkMeshBuilder() : m_Indices(), m_Vertices() {
         this->m_Indices.reserve(65536);
         this->m_Vertices.reserve(65536);
     }
@@ -17,7 +17,7 @@ namespace mesh {
 
     unsigned short ChunkMeshBuilder::AddVertex(VertexData data) {
         this->m_Vertices.push_back(mesh::ChunkMeshBuilder::PackVertex(data));
-        return m_Vertices.size()-1;
+        return m_Vertices.size() - 1;
     }
 
     unsigned int ChunkMeshBuilder::PackVertex(VertexData v) {
